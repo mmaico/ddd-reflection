@@ -1,0 +1,72 @@
+package com.trex.clone;
+
+
+import com.google.common.collect.Lists;
+import com.trex.clone.objects.ddd.customer.Customer;
+import com.trex.clone.objects.ddd.negotiation.Negotiation;
+import com.trex.clone.objects.ddd.negotiation.NegotiationItem;
+import com.trex.clone.objects.ddd.negotiation.NegotiationStatus;
+import com.trex.clone.objects.ddd.seller.Seller;
+import com.trex.clone.objects.hibernate_entities.BusinessProposal;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
+public class CloneObjectTest {
+
+  @Test
+  public void shouldCloneObject() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setId(1l);
+    negotiation.setCareOf("EU");
+    negotiation.setIntroduction("Introduction");
+    negotiation.setStatus(NegotiationStatus.CLOSED_WON);
+
+    Customer customer = new Customer();
+    customer.setId(2l);
+
+    Seller seller = new Seller();
+    seller.setId(3l);
+
+    negotiation.setCustomer(customer);
+    negotiation.setSeller(seller);
+
+    NegotiationItem itemOne = new NegotiationItem();
+    itemOne.setId(10l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    negotiation.setItems(Lists.newArrayList(itemOne));
+
+    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+
+    assertThat(businessProposal.getId(), Matchers.is(1l));
+    assertThat(businessProposal.getClient().getId(), Matchers.is(2l));
+    assertThat(businessProposal.getSeller().getId(), Matchers.is(3l));
+  }
+
+  @Test
+  public void shouldCloneObjectWithList() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setId(1l);
+    negotiation.setCareOf("EU");
+    negotiation.setIntroduction("Introduction");
+    negotiation.setStatus(NegotiationStatus.CLOSED_WON);
+
+    NegotiationItem itemOne = new NegotiationItem();
+    itemOne.setId(10l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    negotiation.setItems(Lists.newArrayList(itemOne));
+
+    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+
+    assertThat(businessProposal.getSaleableItems().size(), Matchers.is(1));
+    assertThat(businessProposal.getSaleableItems().get(0).getId(), Matchers.is(10l));
+    assertThat(businessProposal.getSaleableItems().get(0).getPrice(), Matchers.is(BigDecimal.TEN));
+  }
+
+}
