@@ -1,9 +1,9 @@
 package com.trex;
 
 
-import com.trex.clone.objects.ddd.passenger.Passenger;
-import com.trex.clone.objects.hibernate_entities.Document;
-import com.trex.clone.objects.hibernate_entities.User;
+import com.trex.test_objects.model.passenger.Passenger;
+import com.trex.test_objects.hibernate_entities.Document;
+import com.trex.test_objects.hibernate_entities.User;
 import com.trex.proxy.extractors.AttributeExtractor;
 
 import java.util.Optional;

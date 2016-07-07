@@ -1,4 +1,4 @@
-package com.trex.clone.objects.ddd.negotiation;
+package com.trex.test_objects.model.negotiation;
 
 
 

@@ -1,16 +1,16 @@
-package com.trex.clone.objects.ddd.negotiation;
+package com.trex.test_objects.model.negotiation;
 
 
 
 import com.trex.NegotiationStatusEnumConverter;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
-import com.trex.clone.objects.ddd.customer.Customer;
-import com.trex.clone.objects.ddd.seller.Seller;
-import com.trex.clone.objects.hibernate_entities.BusinessProposal;
-import com.trex.clone.objects.hibernate_entities.Person;
-import com.trex.clone.objects.hibernate_entities.ProposalSaleableItem;
-import com.trex.clone.objects.hibernate_entities.User;
+import com.trex.test_objects.model.customer.Customer;
+import com.trex.test_objects.model.seller.Seller;
+import com.trex.test_objects.hibernate_entities.BusinessProposal;
+import com.trex.test_objects.hibernate_entities.Person;
+import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
+import com.trex.test_objects.hibernate_entities.User;
 
 import java.util.List;
 

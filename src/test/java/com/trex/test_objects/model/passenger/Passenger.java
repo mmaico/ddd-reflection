@@ -1,9 +1,9 @@
-package com.trex.clone.objects.ddd.passenger;
+package com.trex.test_objects.model.passenger;
 
 
 
 import com.trex.DocumentExtractor;
-import com.trex.clone.objects.hibernate_entities.User;
+import com.trex.test_objects.hibernate_entities.User;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
 

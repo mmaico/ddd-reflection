@@ -1,9 +1,9 @@
-package com.trex.clone.objects.ddd.customer;
+package com.trex.test_objects.model.customer;
 
 
 
 import com.trex.shared.annotations.EntityReference;
-import com.trex.clone.objects.hibernate_entities.Person;
+import com.trex.test_objects.hibernate_entities.Person;
 
 @EntityReference(Person.class)
 public class Customer {

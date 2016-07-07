@@ -1,7 +1,7 @@
-package com.trex.clone.objects.ddd.passenger;
+package com.trex.test_objects.model.passenger;
 
-import com.trex.clone.objects.hibernate_entities.BusinessProposal;
-import com.trex.clone.objects.hibernate_entities.User;
+import com.trex.test_objects.hibernate_entities.BusinessProposal;
+import com.trex.test_objects.hibernate_entities.User;
 import com.trex.shared.annotations.EntityReference;
 
 import java.util.Date;

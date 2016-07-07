@@ -1,4 +1,4 @@
-package com.trex.clone.objects.hibernate_entities;
+package com.trex.test_objects.hibernate_entities;
 
 //@Entity
 //@Table(name = "persons")

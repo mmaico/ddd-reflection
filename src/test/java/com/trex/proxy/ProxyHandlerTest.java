@@ -1,10 +1,10 @@
 package com.trex.proxy;
 
 import com.google.common.collect.Lists;
-import com.trex.clone.objects.ddd.negotiation.Negotiation;
-import com.trex.clone.objects.ddd.negotiation.NegotiationStatus;
-import com.trex.clone.objects.ddd.passenger.Travel;
-import com.trex.clone.objects.hibernate_entities.*;
+import com.trex.test_objects.hibernate_entities.*;
+import com.trex.test_objects.model.negotiation.Negotiation;
+import com.trex.test_objects.model.negotiation.NegotiationStatus;
+import com.trex.test_objects.model.passenger.Travel;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.trex.clone.objects.ddd.seller;
+package com.trex.test_objects.model.seller;
 
 
 import java.util.Set;

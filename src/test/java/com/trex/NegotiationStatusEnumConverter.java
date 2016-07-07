@@ -1,8 +1,8 @@
 package com.trex;
 
 
-import com.trex.clone.objects.ddd.negotiation.NegotiationStatus;
-import com.trex.clone.objects.hibernate_entities.ProposalTemperature;
+import com.trex.test_objects.model.negotiation.NegotiationStatus;
+import com.trex.test_objects.hibernate_entities.ProposalTemperature;
 import com.trex.shared.converters.AttributeEntityConverter;
 
 public class NegotiationStatusEnumConverter implements AttributeEntityConverter<NegotiationStatus, ProposalTemperature> {
