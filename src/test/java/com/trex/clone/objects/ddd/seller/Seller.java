@@ -13,6 +13,8 @@ public class Seller {
 
   private Long id;
 
+  private String name;
+
   private List<Role> roles = Lists.newArrayList();
 
 
@@ -30,6 +32,14 @@ public class Seller {
 
   public Boolean hasRole(RoleType type) {
     return roles.stream().filter(role -> role.getTypes().contains(type)).count() > 0;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override

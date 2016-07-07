@@ -142,6 +142,28 @@ public class ReflectionUtils {
     return object != null;
   }
 
+  public static Object getValue(Object target, Field field) {
+
+    makeAccessible(field);
+    try {
+      return field.get(target);
+    } catch (IllegalAccessException e) {
+      throw new IllegalArgumentException("Error when trying to retrieve the value [" + field.getName() + "] on target ["
+          + target.getClass() + "]");
+    }
+
+  }
+
+  public static Object getValue(Object target, String fieldName) {
+    try {
+      Field declaredField = target.getClass().getDeclaredField(fieldName);
+      return getValue(target, declaredField);
+    } catch (NoSuchFieldException e) {
+      throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target ["
+          + target.getClass() + "]");
+    }
+  }
+
   //Copied methods of ReflectionUtils Spring Commons
 
   /**
