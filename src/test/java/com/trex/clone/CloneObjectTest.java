@@ -74,7 +74,6 @@ public class CloneObjectTest {
     Negotiation negotiation = new Negotiation();
     negotiation.setStatus(NegotiationStatus.CLOSED_WON);
 
-
     BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
 
     assertThat(businessProposal.getTemperature(), Matchers.is(ProposalTemperature.WON));
