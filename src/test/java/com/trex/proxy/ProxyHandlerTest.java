@@ -6,7 +6,6 @@ import com.trex.clone.objects.hibernate_entities.BusinessProposal;
 import com.trex.clone.objects.hibernate_entities.Person;
 import com.trex.clone.objects.hibernate_entities.ProposalTemperature;
 import com.trex.clone.objects.hibernate_entities.User;
-import net.sf.cglib.proxy.Enhancer;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -19,8 +18,7 @@ public class ProxyHandlerTest {
   public void shouldGetValuesUsingProxyWrapper() {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
 
-    ProxyHandler proxyHandler = ProxyHandler.create(businessProposal);
-    Negotiation negotiationProxy = (Negotiation) Enhancer.create(Negotiation.class, proxyHandler);
+    Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
 
     assertThat(negotiationProxy.getId(), Matchers.is(1l));
     assertThat(negotiationProxy.getIntroduction(), Matchers.is("test introduction"));
@@ -31,8 +29,7 @@ public class ProxyHandlerTest {
   public void shouldGetNoPrimitiveValuesUsingProxyWrapper() {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
 
-    ProxyHandler proxyHandler = ProxyHandler.create(businessProposal);
-    Negotiation negotiationProxy = (Negotiation) Enhancer.create(Negotiation.class, proxyHandler);
+    Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
 
     assertThat(negotiationProxy.getSeller().getId(), Matchers.is(2l));
     assertThat(negotiationProxy.getSeller().getName(), Matchers.is("Jon Snow"));
@@ -42,8 +39,7 @@ public class ProxyHandlerTest {
   public void shouldGetAttributeWithDiferentNameHibernateEntity() {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
 
-    ProxyHandler proxyHandler = ProxyHandler.create(businessProposal);
-    Negotiation negotiationProxy = (Negotiation) Enhancer.create(Negotiation.class, proxyHandler);
+    Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
 
     assertThat(negotiationProxy.getCustomer().getId(), Matchers.is(3l));
     assertThat(negotiationProxy.getCustomer().getName(), Matchers.is("Tyrion Lannister"));
@@ -53,8 +49,7 @@ public class ProxyHandlerTest {
   public void shouldGetUsingFieldConverter() {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
 
-    ProxyHandler proxyHandler = ProxyHandler.create(businessProposal);
-    Negotiation negotiationProxy = (Negotiation) Enhancer.create(Negotiation.class, proxyHandler);
+    Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
 
     assertThat(negotiationProxy.getStatus(), Matchers.is(NegotiationStatus.COLD));
   }

@@ -13,16 +13,16 @@ import static com.trex.clone.node.DestinationNode.newDestNode;
 import static com.trex.clone.node.OriginNode.newOrigin;
 
 
-public class BusinessModel {
+public class BusinessModelClone {
 
   private Object object;
 
-  public BusinessModel(Object object) {
+  public BusinessModelClone(Object object) {
     this.object = object;
   }
 
-  public static BusinessModel from(Object object) {
-      return new BusinessModel(object);
+  public static BusinessModelClone from(Object object) {
+      return new BusinessModelClone(object);
   }
 
   public <T> T convertTo(Class<T> clazz) {

@@ -12,7 +12,6 @@ import com.trex.clone.objects.hibernate_entities.ProposalTemperature;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,7 +41,7 @@ public class CloneObjectTest {
 
     negotiation.setItems(Lists.newArrayList(itemOne));
 
-    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+    BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
 
     assertThat(businessProposal.getId(), Matchers.is(1l));
     assertThat(businessProposal.getClient().getId(), Matchers.is(2l));
@@ -63,7 +62,7 @@ public class CloneObjectTest {
 
     negotiation.setItems(Lists.newArrayList(itemOne));
 
-    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+    BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
 
     assertThat(businessProposal.getSaleableItems().size(), Matchers.is(1));
     assertThat(businessProposal.getSaleableItems().get(0).getId(), Matchers.is(10l));
@@ -76,7 +75,7 @@ public class CloneObjectTest {
     negotiation.setStatus(NegotiationStatus.CLOSED_WON);
 
 
-    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+    BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
 
     assertThat(businessProposal.getTemperature(), Matchers.is(ProposalTemperature.WON));
   }
