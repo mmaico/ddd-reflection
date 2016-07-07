@@ -8,6 +8,7 @@ import com.trex.clone.objects.ddd.negotiation.NegotiationItem;
 import com.trex.clone.objects.ddd.negotiation.NegotiationStatus;
 import com.trex.clone.objects.ddd.seller.Seller;
 import com.trex.clone.objects.hibernate_entities.BusinessProposal;
+import com.trex.clone.objects.hibernate_entities.ProposalTemperature;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -69,4 +70,14 @@ public class CloneObjectTest {
     assertThat(businessProposal.getSaleableItems().get(0).getPrice(), Matchers.is(BigDecimal.TEN));
   }
 
+  @Test
+  public void shouldConvertAttributeUsingCustomConverter() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setStatus(NegotiationStatus.CLOSED_WON);
+
+
+    BusinessProposal businessProposal = BusinessModel.from(negotiation).convertTo(BusinessProposal.class);
+
+    assertThat(businessProposal.getTemperature(), Matchers.is(ProposalTemperature.WON));
+  }
 }

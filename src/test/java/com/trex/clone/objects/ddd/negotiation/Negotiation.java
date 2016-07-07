@@ -2,6 +2,8 @@ package com.trex.clone.objects.ddd.negotiation;
 
 
 
+import com.trex.NegotiationStatusEnumConverter;
+import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.objects.ddd.customer.Customer;
 import com.trex.clone.objects.ddd.seller.Seller;
@@ -30,7 +32,7 @@ public class Negotiation {
   @EntityReference(value = ProposalSaleableItem.class, fieldName = "saleableItems")
   private List<NegotiationItem> items;
 
-
+  @CustomConverter(convert = NegotiationStatusEnumConverter.class, fieldName = "temperature")
   private NegotiationStatus status;
 
 

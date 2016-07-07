@@ -36,6 +36,9 @@ public class BusinessProposal {
   //@OneToMany(cascade = CascadeType.ALL, mappedBy = "businessProposal")
   private List<ProposalSaleableItem> saleableItems;
 
+  //@Enumerated(EnumType.STRING)
+  private ProposalTemperature temperature;
+
   public BusinessProposal() {
   }
 
@@ -100,4 +103,11 @@ public class BusinessProposal {
     this.saleableItems = saleableItems;
   }
 
+  public ProposalTemperature getTemperature() {
+    return temperature;
+  }
+
+  public void setTemperature(ProposalTemperature temperature) {
+    this.temperature = temperature;
+  }
 }
