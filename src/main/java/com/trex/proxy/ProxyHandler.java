@@ -2,8 +2,7 @@ package com.trex.proxy;
 
 
 
-import com.sun.deploy.util.ReflectionUtil;
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.libraries.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

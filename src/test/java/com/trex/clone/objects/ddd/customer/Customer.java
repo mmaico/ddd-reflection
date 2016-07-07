@@ -2,7 +2,7 @@ package com.trex.clone.objects.ddd.customer;
 
 
 
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.objects.hibernate_entities.Person;
 
 @EntityReference(Person.class)

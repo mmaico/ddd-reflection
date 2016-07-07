@@ -3,7 +3,7 @@ package com.trex.clone;
 
 
 import com.google.common.collect.Iterables;
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.exceptions.InvalidCollectionException;
 import com.trex.clone.node.DestinationNode;
 import com.trex.clone.node.OriginNode;

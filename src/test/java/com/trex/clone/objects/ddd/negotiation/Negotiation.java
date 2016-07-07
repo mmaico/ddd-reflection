@@ -2,7 +2,7 @@ package com.trex.clone.objects.ddd.negotiation;
 
 
 
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.objects.ddd.customer.Customer;
 import com.trex.clone.objects.ddd.seller.Seller;
 import com.trex.clone.objects.hibernate_entities.BusinessProposal;

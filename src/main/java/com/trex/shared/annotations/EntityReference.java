@@ -1,10 +1,10 @@
-package com.trex.clone.annotations;
+package com.trex.shared.annotations;
 
 
 
 
-import com.trex.clone.converters.AttributeConverter;
-import com.trex.clone.converters.NullObjectConverter;
+import com.trex.shared.converters.AttributeEntityConverter;
+import com.trex.shared.converters.NullObjectConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.ElementType;
@@ -20,5 +20,5 @@ public @interface EntityReference {
 
   String fieldName() default StringUtils.EMPTY;
 
-  Class<? extends AttributeConverter> convert() default NullObjectConverter.class;
+  Class<? extends AttributeEntityConverter> convert() default NullObjectConverter.class;
 }

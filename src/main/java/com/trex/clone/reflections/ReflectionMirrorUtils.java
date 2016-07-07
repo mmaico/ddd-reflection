@@ -3,7 +3,7 @@ package com.trex.clone.reflections;
 
 
 import com.google.common.collect.Lists;
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.node.ChildNode;
 import com.trex.shared.libraries.ReflectionUtils;
 

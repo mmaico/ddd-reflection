@@ -3,7 +3,7 @@ package com.trex.clone.objects.ddd.seller;
 
 
 import com.google.common.collect.Lists;
-import com.trex.clone.annotations.EntityReference;
+import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.objects.hibernate_entities.User;
 
 import java.util.List;

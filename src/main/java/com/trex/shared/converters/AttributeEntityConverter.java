@@ -1,11 +1,11 @@
 
-package com.trex.clone.converters;
+package com.trex.shared.converters;
 
 
-public interface AttributeConverter<X,Y> {
+public interface AttributeEntityConverter<X,Y> {
 
 	Y convertToEntityAttribute(X attribute);
 
-
 	X convertToBusinessModel(Y dbData);
+
 }
