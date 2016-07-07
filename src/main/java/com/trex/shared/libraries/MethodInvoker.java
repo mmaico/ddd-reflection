@@ -49,18 +49,6 @@ public class MethodInvoker {
 	/** The method we will call */
 	private Method methodObject;
 
-
-	/**
-	 * Set the target class on which to call the target method.
-	 * Only necessary when the target method is static; else,
-	 * a target object needs to be specified anyway.
-	 * @see #setTargetObject
-	 * @see #setTargetMethod
-	 */
-	public void setTargetClass(Class<?> targetClass) {
-		this.targetClass = targetClass;
-	}
-
 	/**
 	 * Return the target class on which to call the target method.
 	 */
@@ -72,7 +60,6 @@ public class MethodInvoker {
 	 * Set the target object on which to call the target method.
 	 * Only necessary when the target method is not static;
 	 * else, a target class is sufficient.
-	 * @see #setTargetClass
 	 * @see #setTargetMethod
 	 */
 	public void setTargetObject(Object targetObject) {
@@ -93,7 +80,6 @@ public class MethodInvoker {
 	 * Set the name of the method to be invoked.
 	 * Refers to either a static method or a non-static method,
 	 * depending on a target object being set.
-	 * @see #setTargetClass
 	 * @see #setTargetObject
 	 */
 	public void setTargetMethod(String targetMethod) {
@@ -105,17 +91,6 @@ public class MethodInvoker {
 	 */
 	public String getTargetMethod() {
 		return this.targetMethod;
-	}
-
-	/**
-	 * Set a fully qualified static method name to invoke,
-	 * e.g. "example.MyExampleClass.myExampleMethod".
-	 * Convenient alternative to specifying targetClass and targetMethod.
-	 * @see #setTargetClass
-	 * @see #setTargetMethod
-	 */
-	public void setStaticMethod(String staticMethod) {
-		this.staticMethod = staticMethod;
 	}
 
 	/**
@@ -239,14 +214,6 @@ public class MethodInvoker {
 			throw new IllegalStateException("prepare() must be called prior to invoke() on MethodInvoker");
 		}
 		return this.methodObject;
-	}
-
-	/**
-	 * Return whether this invoker has been prepared already,
-	 * i.e. whether it allows access to {@link #getPreparedMethod()} already.
-	 */
-	public boolean isPrepared() {
-		return (this.methodObject != null);
 	}
 
 	/**

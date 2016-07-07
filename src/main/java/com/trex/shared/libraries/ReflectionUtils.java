@@ -154,16 +154,6 @@ public class ReflectionUtils {
 
   }
 
-  public static Object getValue(Object target, String fieldName) {
-    try {
-      Field declaredField = target.getClass().getDeclaredField(fieldName);
-      return getValue(target, declaredField);
-    } catch (NoSuchFieldException e) {
-      throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target ["
-          + target.getClass() + "]");
-    }
-  }
-
   //Copied methods of ReflectionUtils Spring Commons
 
   /**
@@ -298,44 +288,6 @@ public class ReflectionUtils {
       throw (RuntimeException) ex;
     }
     throw new UndeclaredThrowableException(ex);
-  }
-
-  /**
-   * Invoke the method with the given {@code name} on the supplied target
-   * object with the supplied arguments.
-   * <p>
-   * <p>This method traverses the class hierarchy in search of the desired
-   * method. In addition, an attempt will be made to make non-{@code public}
-   * methods <em>accessible</em>, thus allowing one to invoke {@code protected},
-   * {@code private}, and <em>package-private</em> methods.
-   *
-   * @param target the target object on which to invoke the specified method
-   * @param name   the name of the method to invoke
-   * @param args   the arguments to provide to the method
-   * @return the invocation result, if any
-   * @see MethodInvoker
-   * @see ReflectionUtils#makeAccessible(Method)
-   * @see ReflectionUtils#invokeMethod(Method, Object, Object[])
-   * @see ReflectionUtils#handleReflectionException(Exception)
-   */
-  @SuppressWarnings("unchecked")
-  public static <T> T invokeMethod(Object target, String name, Object... args) {
-    Assert.notNull(target, "Target object must not be null");
-    Assert.hasLength(name, "Method name must not be empty");
-
-    try {
-      MethodInvoker methodInvoker = new MethodInvoker();
-      methodInvoker.setTargetObject(target);
-      methodInvoker.setTargetMethod(name);
-      methodInvoker.setArguments(args);
-      methodInvoker.prepare();
-
-      return (T) methodInvoker.invoke();
-    } catch (Exception e) {
-      ReflectionUtils.handleReflectionException(e);
-    }
-
-    throw new IllegalStateException("Should never get here");
   }
 
   public static Method[] getAllDeclaredMethods(Class<?> leafClass) {
