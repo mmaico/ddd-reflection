@@ -4,7 +4,7 @@ package com.trex.clone;
 
 
 import com.trex.clone.node.*;
-import com.trex.clone.reflections.ReflectionMirrorUtils;
+import com.trex.clone.reflections.ReflectionCloneUtils;
 import com.trex.shared.libraries.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -15,7 +15,7 @@ import static com.trex.clone.node.DestinationNode.newDestNode;
 import static com.trex.clone.node.OriginNode.newOrigin;
 import static com.trex.clone.node.PreviousNode.newPreviousNode;
 import static com.trex.clone.node.TreeMirrorNode.newOrigNode;
-import static com.trex.clone.reflections.ReflectionMirrorUtils.*;
+import static com.trex.clone.reflections.ReflectionCloneUtils.*;
 
 
 
@@ -40,7 +40,7 @@ public class MirrorObject {
     } else {
         mergePrimitiveAttributes(treeMirrorNode.getOrigin().getObject(), treeMirrorNode.getDest().getObject());
         mergeAttrWithCustomConverter(treeMirrorNode.getOrigin().getObject(), treeMirrorNode.getDest().getObject());
-        List<ChildNode> children = ReflectionMirrorUtils.getReferenceFields(treeMirrorNode.getOrigin().getObject());
+        List<ChildNode> children = ReflectionCloneUtils.getReferenceFields(treeMirrorNode.getOrigin().getObject());
 
         for (ChildNode child : children) {
           OriginNode originNode = newOrigin(child.getObject(), child.getField());

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-public class ReflectionMirrorUtils {
+public class ReflectionCloneUtils {
 
 
   public static void mergePrimitiveAttributes(Object origin, Object destination) {

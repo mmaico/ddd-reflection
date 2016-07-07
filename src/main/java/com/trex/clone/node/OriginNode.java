@@ -3,14 +3,14 @@ package com.trex.clone.node;
 
 
 
-import com.trex.clone.reflections.ReflectionMirrorUtils;
+import com.trex.clone.reflections.ReflectionCloneUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.trex.clone.reflections.ReflectionMirrorUtils.getPropertyName;
+import static com.trex.clone.reflections.ReflectionCloneUtils.getPropertyName;
 
 
 public class OriginNode {
@@ -29,7 +29,7 @@ public class OriginNode {
     }
 
     public Optional<Object> generateNewInstanceDestination() {
-        return Optional.ofNullable(ReflectionMirrorUtils.newInstanceByReference(origin));
+        return Optional.ofNullable(ReflectionCloneUtils.newInstanceByReference(origin));
     }
 
     public boolean isClassCollection() {
