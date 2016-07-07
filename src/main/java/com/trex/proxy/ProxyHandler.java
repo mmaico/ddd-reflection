@@ -3,8 +3,8 @@ package com.trex.proxy;
 
 
 import com.trex.proxy.reflections.ReflectionProxyUtils;
-import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.shared.annotations.Extractor;
 import com.trex.shared.libraries.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -13,6 +13,8 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Optional;
+
+import static com.trex.proxy.reflections.ReflectionProxyUtils.invokeCustomConverter;
 
 public class ProxyHandler implements MethodInterceptor {
 
@@ -27,6 +29,10 @@ public class ProxyHandler implements MethodInterceptor {
 
     if (hibernateEntity == null) {
       return methodProxy.invokeSuper(objectModel, objects);
+    }
+
+    if (method.getAnnotation(Extractor.class) != null) {
+      return ReflectionProxyUtils.invokeExtractor(method, hibernateEntity);
     }
 
     String methodName = method.getName();
@@ -45,10 +51,9 @@ public class ProxyHandler implements MethodInterceptor {
       Object result = ReflectionUtils.getValue(this.hibernateEntity, hibernateEntityFieldFound.get());
       return Enhancer.create(method.getReturnType(), ProxyHandler.create(result));
     } else {
-      Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
-      if (fieldObjectModel.getAnnotation(CustomConverter.class) != null) {
-        Object result = ReflectionUtils.getValue(this.hibernateEntity, hibernateEntityFieldFound.get());
-        return ReflectionProxyUtils.customConvert(fieldObjectModel, result);
+      if (ReflectionProxyUtils.hasCustomConverter(objectModel, methodName)) {
+        Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
+        return invokeCustomConverter(this.hibernateEntity, hibernateEntityFieldFound.get(), fieldObjectModel);
       } else {
         return ReflectionUtils.getValue(this.hibernateEntity, hibernateEntityFieldFound.get());
       }

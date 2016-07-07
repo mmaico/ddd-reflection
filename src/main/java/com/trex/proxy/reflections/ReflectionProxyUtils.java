@@ -2,13 +2,16 @@ package com.trex.proxy.reflections;
 
 
 
+import com.trex.proxy.extractors.AttributeExtractor;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.shared.annotations.Extractor;
 import com.trex.shared.converters.AttributeEntityConverter;
 import com.trex.shared.libraries.ReflectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -38,14 +41,28 @@ public class ReflectionProxyUtils {
     return field.get();
   }
 
-  public static Object customConvert(Field field, Object target) {
+  public static Boolean hasCustomConverter(Object objectModel, String methodName) {
+    Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
+    return fieldObjectModel.getAnnotation(CustomConverter.class) != null;
+  }
 
-    CustomConverter annotation = field.getAnnotation(CustomConverter.class);
+  public static Object invokeExtractor(Method method, Object hibernateEntity) {
+    Extractor extractorAnn = method.getAnnotation(Extractor.class);
+    Class<? extends AttributeExtractor> extractorClass = extractorAnn.value();
+    AttributeExtractor extractorInstance = (AttributeExtractor) ReflectionUtils.newInstance(extractorClass);
+    return extractorInstance.getAttributeValueEntity(hibernateEntity);
+  }
+
+  public static Object invokeCustomConverter(Object hibernateEntity, Field entityField, Field fieldObjectModel) {
+
+    CustomConverter annotation = fieldObjectModel.getAnnotation(CustomConverter.class);
     Class<? extends AttributeEntityConverter> convertClass = annotation.convert();
     AttributeEntityConverter attributeEntityConverter =
         (AttributeEntityConverter) ReflectionUtils.newInstance(convertClass);
 
-    return attributeEntityConverter.convertToBusinessModel(target);
+    Object result = ReflectionUtils.getValue(hibernateEntity, entityField);
+
+    return attributeEntityConverter.convertToBusinessModel(result);
   }
 
 }

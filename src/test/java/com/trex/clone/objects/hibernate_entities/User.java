@@ -1,5 +1,6 @@
 package com.trex.clone.objects.hibernate_entities;
 
+import java.util.List;
 import java.util.Objects;
 
 //@Entity
@@ -26,6 +27,8 @@ public class User {
   private String lastname;
 
   private String email;
+
+  private List<Document> documents;
 
 
   public User() {
@@ -99,6 +102,14 @@ public class User {
     this.email = email;
   }
 
+
+  public List<Document> getDocuments() {
+    return documents;
+  }
+
+  public void setDocuments(List<Document> documents) {
+    this.documents = documents;
+  }
 
   @Override
   public String toString() {

@@ -1,11 +1,10 @@
 package com.trex.proxy;
 
+import com.google.common.collect.Lists;
 import com.trex.clone.objects.ddd.negotiation.Negotiation;
 import com.trex.clone.objects.ddd.negotiation.NegotiationStatus;
-import com.trex.clone.objects.hibernate_entities.BusinessProposal;
-import com.trex.clone.objects.hibernate_entities.Person;
-import com.trex.clone.objects.hibernate_entities.ProposalTemperature;
-import com.trex.clone.objects.hibernate_entities.User;
+import com.trex.clone.objects.ddd.passenger.Travel;
+import com.trex.clone.objects.hibernate_entities.*;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -54,6 +53,18 @@ public class ProxyHandlerTest {
     assertThat(negotiationProxy.getStatus(), Matchers.is(NegotiationStatus.COLD));
   }
 
+  @Test
+  public void shouldGetUsingCustomExtractor() {
+    final String passportExpected = "PASSPORT585Z44";
+    BusinessProposal businessProposal = getHibernateObjectOnRepositoryTwo();
+
+    Travel travel = BusinessModelProxy.from(businessProposal).proxy(Travel.class);
+
+    String passport = travel.getPassenger().getPassport();
+
+    assertThat(passport, Matchers.is(passportExpected));
+  }
+
   private BusinessProposal getHibernateObjectOnRepository() {
     BusinessProposal businessProposal = new BusinessProposal();
     businessProposal.setId(1l);
@@ -71,6 +82,24 @@ public class ProxyHandlerTest {
 
     businessProposal.setSeller(user);
     businessProposal.setClient(person);
+
+    return businessProposal;
+  }
+
+  private BusinessProposal getHibernateObjectOnRepositoryTwo() {
+    BusinessProposal businessProposal = new BusinessProposal();
+    businessProposal.setId(1l);
+
+    User user = new User();
+    user.setId(2l);
+    user.setName("Jon Snow");
+
+    Document passport = new Document("PASSPORT585Z44", Document.DocumentTypeEnum.PASSPORT);
+    Document socialSecurity = new Document("SOCIAL_SECURITY788454X55", Document.DocumentTypeEnum.SOCIAL_SECURITY_CARD);
+
+    user.setDocuments(Lists.newArrayList(passport, socialSecurity));
+
+    businessProposal.setSeller(user);
 
     return businessProposal;
   }
