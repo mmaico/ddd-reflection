@@ -10,7 +10,7 @@ buildscript {
 }
 
 group 'com.trex'
-version '1.0-SNAPSHOT'
+version getProperty('version')
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -33,3 +33,4 @@ dependencies {
     compile("net.vidageek:mirror:1.6.1")
     compile("commons-beanutils:commons-beanutils:1.9.2")
 }
+
