@@ -5,7 +5,6 @@ package com.trex.proxy;
 import com.trex.proxy.reflections.ReflectionProxyUtils;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
-import com.trex.shared.libraries.CollectionUtils;
 import com.trex.shared.libraries.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

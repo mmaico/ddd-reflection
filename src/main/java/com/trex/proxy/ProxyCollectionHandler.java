@@ -3,6 +3,7 @@ package com.trex.proxy;
 
 
 import com.trex.shared.libraries.ReflectionUtils;
+import com.trex.shared.libraries.registers.PrimitiveTypeFields;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Field;
@@ -27,10 +28,16 @@ public class ProxyCollectionHandler {
       throw new IllegalArgumentException("Invalid collection on field [" + fieldOrigin.getName() + "]");
     }
 
-    return this.hibernateCollection.stream()
-        .map(item ->
-            Enhancer.create(genericClassCollection.get(), ProxyHandler.create(item))
-        ).collect(Collectors.toList());
+    Boolean hasPrimitive = PrimitiveTypeFields.getInstance().contains(genericClassCollection.get());
+
+    if (hasPrimitive) {
+      return hibernateCollection;
+    } else {
+      return this.hibernateCollection.stream()
+          .map(item ->
+              Enhancer.create(genericClassCollection.get(), ProxyHandler.create(item))
+          ).collect(Collectors.toList());
+    }
   }
 
   public static ProxyCollectionHandler createProxyCollection(Collection collection, Field fieldOrigin) {

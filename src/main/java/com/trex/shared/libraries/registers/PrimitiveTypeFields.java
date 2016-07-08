@@ -1,4 +1,4 @@
-package com.trex.clone.reflections.registers;
+package com.trex.shared.libraries.registers;
 
 
 import com.google.common.collect.Lists;

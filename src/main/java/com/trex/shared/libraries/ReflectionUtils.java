@@ -3,7 +3,7 @@ package com.trex.shared.libraries;
 
 import com.trex.clone.node.ChildNode;
 import com.trex.shared.libraries.concurrent.ConcurrentReferenceHashMap;
-import com.trex.clone.reflections.registers.PrimitiveTypeFields;
+import com.trex.shared.libraries.registers.PrimitiveTypeFields;
 import net.vidageek.mirror.dsl.Mirror;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.trex.clone.node.ChildNode.createDescriptor;

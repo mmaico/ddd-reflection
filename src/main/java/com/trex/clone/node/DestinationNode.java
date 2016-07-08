@@ -4,7 +4,7 @@ package com.trex.clone.node;
 
 
 import com.trex.shared.libraries.ReflectionUtils;
-import com.trex.clone.reflections.registers.CollectionsImplementationRegister;
+import com.trex.shared.libraries.registers.CollectionsImplementationRegister;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
