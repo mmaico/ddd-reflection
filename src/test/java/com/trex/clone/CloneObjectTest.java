@@ -2,13 +2,13 @@ package com.trex.clone;
 
 
 import com.google.common.collect.Lists;
+import com.trex.test_objects.hibernate_entities.BusinessProposal;
+import com.trex.test_objects.hibernate_entities.ProposalTemperature;
 import com.trex.test_objects.model.customer.Customer;
 import com.trex.test_objects.model.negotiation.Negotiation;
 import com.trex.test_objects.model.negotiation.NegotiationItem;
 import com.trex.test_objects.model.negotiation.NegotiationStatus;
 import com.trex.test_objects.model.seller.Seller;
-import com.trex.test_objects.hibernate_entities.BusinessProposal;
-import com.trex.test_objects.hibernate_entities.ProposalTemperature;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -20,6 +20,7 @@ public class CloneObjectTest {
 
   @Test
   public void shouldCloneObject() {
+
     Negotiation negotiation = new Negotiation();
     negotiation.setId(1l);
     negotiation.setCareOf("EU");

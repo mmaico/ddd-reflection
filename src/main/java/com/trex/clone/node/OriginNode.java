@@ -4,6 +4,7 @@ package com.trex.clone.node;
 
 
 import com.trex.clone.reflections.ReflectionCloneUtils;
+import com.trex.shared.libraries.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -33,7 +34,9 @@ public class OriginNode {
     }
 
     public boolean isClassCollection() {
-        return  field != null  && (Collection.class.isAssignableFrom(field.getType()) || Map.class.isAssignableFrom(field.getType()));
+
+
+        return  field != null  && CollectionUtils.isCollection(field.getType());
     }
 
     public Object getObject() {

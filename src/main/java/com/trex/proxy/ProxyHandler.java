@@ -5,6 +5,7 @@ package com.trex.proxy;
 import com.trex.proxy.reflections.ReflectionProxyUtils;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
+import com.trex.shared.libraries.CollectionUtils;
 import com.trex.shared.libraries.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -12,9 +13,11 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Optional;
 
 import static com.trex.proxy.reflections.ReflectionProxyUtils.invokeCustomConverter;
+import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 public class ProxyHandler implements MethodInterceptor {
 
@@ -45,14 +48,19 @@ public class ProxyHandler implements MethodInterceptor {
           + "not found on [ " + this.hibernateEntity.getClass() + "]");
     }
 
-    boolean isDDDModel = ReflectionUtils.hasAnnotation(method.getReturnType(), EntityReference.class);
+    Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
+    boolean isDDDModel = fieldObjectModel.getAnnotation(EntityReference.class) != null;
 
     if (isDDDModel) {
       Object result = ReflectionUtils.getValue(this.hibernateEntity, hibernateEntityFieldFound.get());
-      return Enhancer.create(method.getReturnType(), ProxyHandler.create(result));
+      if (isCollection(hibernateEntityFieldFound.get().getType())) {
+        return ProxyCollectionHandler
+            .createProxyCollection((Collection) result, fieldObjectModel).proxy();
+      } else {
+        return Enhancer.create(method.getReturnType(), ProxyHandler.create(result));
+      }
     } else {
       if (ReflectionProxyUtils.hasCustomConverter(objectModel, methodName)) {
-        Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
         return invokeCustomConverter(this.hibernateEntity, hibernateEntityFieldFound.get(), fieldObjectModel);
       } else {
         return ReflectionUtils.getValue(this.hibernateEntity, hibernateEntityFieldFound.get());

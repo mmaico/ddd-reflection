@@ -7,7 +7,7 @@ import com.trex.shared.annotations.EntityReference;
 import java.util.Date;
 
 @EntityReference(BusinessProposal.class)
-public class Travel {
+public class Aircraft {
 
   private Long id;
 

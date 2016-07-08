@@ -108,6 +108,13 @@ public class ReflectionUtils {
     return invokeMethod(method, target);
   }
 
+  public static Optional<Class> createClass(String className) {
+    try {
+      return Optional.ofNullable(Class.forName(className));
+    } catch (ClassNotFoundException e) {
+      return Optional.empty();
+    }
+  }
 
   public static Object newInstance(Class clazz) {
     try {
@@ -152,6 +159,12 @@ public class ReflectionUtils {
           + target.getClass() + "]");
     }
 
+  }
+
+  public static Optional<Class> getGenericClassCollection(Field field) {
+    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+    Class<?> collectionType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+    return createClass(collectionType.getName());
   }
 
   //Copied methods of ReflectionUtils Spring Commons

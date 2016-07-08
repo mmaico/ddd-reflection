@@ -3,10 +3,14 @@ package com.trex.proxy;
 import com.google.common.collect.Lists;
 import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.negotiation.Negotiation;
+import com.trex.test_objects.model.negotiation.NegotiationItem;
 import com.trex.test_objects.model.negotiation.NegotiationStatus;
-import com.trex.test_objects.model.passenger.Travel;
+import com.trex.test_objects.model.passenger.Aircraft;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -58,11 +62,26 @@ public class ProxyHandlerTest {
     final String passportExpected = "PASSPORT585Z44";
     BusinessProposal businessProposal = getHibernateObjectOnRepositoryTwo();
 
-    Travel travel = BusinessModelProxy.from(businessProposal).proxy(Travel.class);
+    Aircraft aircraft = BusinessModelProxy.from(businessProposal).proxy(Aircraft.class);
 
-    String passport = travel.getPassenger().getPassport();
+    String passport = aircraft.getPassenger().getPassport();
 
     assertThat(passport, Matchers.is(passportExpected));
+  }
+
+  @Test
+  public void shouldGetListUsingProxy() {
+    BusinessProposal businessProposal = getHibernateObjectOnRepositoryThree();
+
+    Negotiation negotiation = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
+
+    List<NegotiationItem> items = negotiation.getItems();
+
+    assertThat(items.get(0).getId(), Matchers.is(1l));
+    assertThat(items.get(0).getPrice(), Matchers.is(BigDecimal.TEN));
+
+    assertThat(items.get(1).getId(), Matchers.is(2l));
+    assertThat(items.get(1).getPrice(), Matchers.is(BigDecimal.ONE));
   }
 
   private BusinessProposal getHibernateObjectOnRepository() {
@@ -100,6 +119,23 @@ public class ProxyHandlerTest {
     user.setDocuments(Lists.newArrayList(passport, socialSecurity));
 
     businessProposal.setSeller(user);
+
+    return businessProposal;
+  }
+
+  private BusinessProposal getHibernateObjectOnRepositoryThree() {
+    BusinessProposal businessProposal = new BusinessProposal();
+    businessProposal.setId(1l);
+
+    ProposalSaleableItem itemOne = new ProposalSaleableItem();
+    itemOne.setId(1l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    ProposalSaleableItem itemTwo = new ProposalSaleableItem();
+    itemTwo.setId(2l);
+    itemTwo.setPrice(BigDecimal.ONE);
+
+    businessProposal.setSaleableItems(Lists.newArrayList(itemOne, itemTwo));
 
     return businessProposal;
   }

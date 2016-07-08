@@ -16,7 +16,7 @@
 
 package com.trex.shared.libraries;
 
-import java.util.*;
+import java.util.Collection;
 
 /**
  * Miscellaneous collection utility methods.
@@ -64,4 +64,11 @@ public abstract class CollectionUtils {
 		return value;
 	}
 
+	public static Boolean isCollection(Class<?> type) {
+		return Collection.class.isAssignableFrom(type);
+	}
+
+	public static Boolean isCollection(Object object) {
+		return Collection.class.isAssignableFrom(object.getClass());
+	}
 }
