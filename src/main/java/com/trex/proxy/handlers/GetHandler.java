@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Optional;
 
+import static com.trex.proxy.reflections.ReflectionProxyUtils.hasCustomConverter;
 import static com.trex.proxy.reflections.ReflectionProxyUtils.invokeCustomConverter;
 import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
@@ -27,11 +28,10 @@ public class GetHandler implements Handler {
 
         String methodName = infoBuilder.getMethod().getName();
 
-        String hibernateEntityField = ReflectionProxyUtils.getHibernateEntityFieldNameBy(infoBuilder.getObjectModel(), methodName);
-        Optional<Field> hibernateEntityFieldFound = ReflectionUtils.getField(infoBuilder.getHibernateEntity(), hibernateEntityField);
+        Optional<Field> hibernateEntityFieldFound = infoBuilder.getHibernateEntityField();
 
         if (!hibernateEntityFieldFound.isPresent()) {
-            throw new IllegalArgumentException("Attribute name [ " + hibernateEntityField +"] "
+            throw new IllegalArgumentException("Method name [ " + methodName +"] "
                     + "not found on [ " + infoBuilder.getHibernateEntity().getClass() + "]");
         }
 
@@ -47,7 +47,7 @@ public class GetHandler implements Handler {
                 return Enhancer.create(infoBuilder.getMethod().getReturnType(), ProxyInterceptor.create(result));
             }
         } else {
-            if (ReflectionProxyUtils.hasCustomConverter(infoBuilder.getObjectModel(), methodName)) {
+            if (hasCustomConverter(infoBuilder.getObjectModel(), methodName)) {
                 return invokeCustomConverter(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get(), fieldObjectModel);
             } else {
                 return ReflectionUtils.getValue(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get());

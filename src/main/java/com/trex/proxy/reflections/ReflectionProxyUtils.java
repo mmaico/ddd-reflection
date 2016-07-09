@@ -53,6 +53,13 @@ public class ReflectionProxyUtils {
     return extractorInstance.getAttributeValueEntity(hibernateEntity);
   }
 
+  public static Object invokeExtractorReverse(Method method, Object hibernateEntity) {
+    Extractor extractorAnn = method.getAnnotation(Extractor.class);
+    Class<? extends AttributeExtractor> extractorClass = extractorAnn.value();
+    AttributeExtractor extractorInstance = (AttributeExtractor) ReflectionUtils.newInstance(extractorClass);
+    return extractorInstance.getAttributeValueModel(hibernateEntity);
+  }
+
   public static Object invokeCustomConverter(Object hibernateEntity, Field entityField, Field fieldObjectModel) {
 
     CustomConverter annotation = fieldObjectModel.getAnnotation(CustomConverter.class);
@@ -63,6 +70,16 @@ public class ReflectionProxyUtils {
     Object result = ReflectionUtils.getValue(hibernateEntity, entityField);
 
     return attributeEntityConverter.convertToBusinessModel(result);
+  }
+
+  public static Object invokeCustomConverterReverse(Field fieldObjectModel, Object valueToConvert) {
+
+    CustomConverter annotation = fieldObjectModel.getAnnotation(CustomConverter.class);
+    Class<? extends AttributeEntityConverter> convertClass = annotation.convert();
+    AttributeEntityConverter attributeEntityConverter =
+            (AttributeEntityConverter) ReflectionUtils.newInstance(convertClass);
+
+    return attributeEntityConverter.convertToEntityAttribute(valueToConvert);
   }
 
 }

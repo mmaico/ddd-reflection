@@ -25,6 +25,13 @@ public class BusinessModelClone {
       return new BusinessModelClone(object);
   }
 
+  public void merge(Object hibernateEntity) {
+    TreeMirrorNode initialTreeMirrorNode = TreeMirrorNode.newOrigNode(newOrigin(object, null), newDestNode(hibernateEntity,
+            Optional.empty(), PreviousNode.newPreviousNode(null, null)));
+
+    new MirrorObject().mirror(initialTreeMirrorNode);
+
+  }
   public <T> T convertTo(Class<T> clazz) {
     Object target = ReflectionUtils.newInstance(clazz);
 

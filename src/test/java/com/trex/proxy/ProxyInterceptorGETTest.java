@@ -15,7 +15,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class ProxyInterceptorTest {
+public class ProxyInterceptorGETTest {
 
   @Test
   public void shouldGetValuesUsingProxyWrapper() {

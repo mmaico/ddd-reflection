@@ -1,21 +1,29 @@
 package com.trex.proxy.handlers;
 
 
+import com.trex.proxy.reflections.ReflectionProxyUtils;
 import com.trex.shared.libraries.GetterSetterEnum;
+import com.trex.shared.libraries.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class HandlerInfoBuilder {
     private final Object objectModel;
     private final Method method;
     private final Object[] params;
     private final Object hibernateEntity;
+    private final Optional<Field> hibernateEntityField;
 
     public HandlerInfoBuilder(Object objectModel, Method method, Object[] params, Object hibernateEntity) {
         this.objectModel = objectModel;
         this.method = method;
         this.params = params;
         this.hibernateEntity = hibernateEntity;
+
+        String fieldName = ReflectionProxyUtils.getHibernateEntityFieldNameBy(objectModel, method.getName());
+        this.hibernateEntityField = ReflectionUtils.getField(hibernateEntity, fieldName);
     }
 
 
@@ -42,4 +50,14 @@ public class HandlerInfoBuilder {
     public GetterSetterEnum getOperation() {
         return GetterSetterEnum.getOperation(method.getName());
     }
+
+    public Optional<Field> getHibernateEntityField() {
+        return hibernateEntityField;
+    }
+
+    public Object getMethodParam() {
+        return params[0];
+    }
+
+
 }
