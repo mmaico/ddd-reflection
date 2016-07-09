@@ -35,7 +35,7 @@ public class ProxyCollectionHandler {
     } else {
       return this.hibernateCollection.stream()
           .map(item ->
-              Enhancer.create(genericClassCollection.get(), ProxyHandler.create(item))
+              Enhancer.create(genericClassCollection.get(), ProxyInterceptor.create(item))
           ).collect(Collectors.toList());
     }
   }

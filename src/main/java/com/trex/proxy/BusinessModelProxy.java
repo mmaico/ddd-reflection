@@ -16,7 +16,7 @@ public class BusinessModelProxy {
   }
 
   public <T> T proxy(Class<T> clazz) {
-    ProxyHandler proxyHandler = ProxyHandler.create(object);
-    return  (T) Enhancer.create(clazz, proxyHandler);
+    ProxyInterceptor proxyInterceptor = ProxyInterceptor.create(object);
+    return  (T) Enhancer.create(clazz, proxyInterceptor);
   }
 }
