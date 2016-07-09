@@ -45,6 +45,22 @@ public class ProxyInterceptorSETTest {
     assertThat(seller.getName(), Matchers.is("Mr. Anderson"));
   }
 
+  @Test
+  public void shouldUpdateFieldOnBusinessProposalByNegotiationUsingProxy() {
+    BusinessProposal businessProposal = getHibernateObjectOnRepository();
+
+    Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
+    negotiationProxy.setCareOf("Test set on proxy");
+    negotiationProxy.setIntroduction("Other introduction using proxy");
+    negotiationProxy.setId(10l);
+
+
+
+    assertThat(businessProposal.getCareOf(), Matchers.is("Test set on proxy"));
+    assertThat(businessProposal.getIntroduction(), Matchers.is("Other introduction using proxy"));
+    assertThat(businessProposal.getId(), Matchers.is(10l));
+  }
+
 
   private BusinessProposal getHibernateObjectOnRepository() {
     BusinessProposal businessProposal = new BusinessProposal();
