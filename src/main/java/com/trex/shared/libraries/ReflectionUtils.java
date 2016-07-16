@@ -5,6 +5,7 @@ import com.trex.clone.node.ChildNode;
 import com.trex.shared.libraries.concurrent.ConcurrentReferenceHashMap;
 import com.trex.shared.libraries.registers.PrimitiveTypeFields;
 import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.MirrorList;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,13 +27,27 @@ public class ReflectionUtils {
   private static final Map<Class<?>, Method[]> declaredMethodsCache =
       new ConcurrentReferenceHashMap<>(256);
 
+  private static final Map<Class<?>, List<Field>> declaredFieldsCache =
+          new ConcurrentReferenceHashMap<>(256);
+
+  private static final Map<Class<?>, Map<String, Optional<Field>>> declaredFieldCache =
+          new ConcurrentReferenceHashMap<>(256);
+
+  private static final Map<String, Optional<Class>> classCache = new ConcurrentReferenceHashMap<>(256);
+
   private static final String GETTER_PREFIX = "get";
 
   public static List<Field> getFields(Object base) {
-    return new Mirror().on(base.getClass())
-        .reflectAll().fields()
-        .matching(field -> PrimitiveTypeFields.getInstance().contains(field.getType()));
 
+    if (declaredFieldsCache.get(base.getClass()) == null) {
+      MirrorList<Field> fields = new Mirror().on(base.getClass())
+              .reflectAll().fields()
+              .matching(field -> PrimitiveTypeFields.getInstance().contains(field.getType()));
+      declaredFieldsCache.put(base.getClass(), fields);
+      return fields;
+    }
+
+    return declaredFieldsCache.get(base.getClass());
   }
 
   public static Optional<Field> getField(Object base, String fieldName, Class annotation) {
@@ -43,10 +58,30 @@ public class ReflectionUtils {
   }
 
   public static Optional<Field> getField(Object base, String fieldName) {
-    return new Mirror().on(base.getClass())
-        .reflectAll().fields()
-        .matching(field -> field.getName().equals(fieldName))
-        .stream().findFirst();
+
+    if (declaredFieldCache.containsKey(base.getClass())
+            && declaredFieldCache.get(base.getClass()).containsKey(fieldName)) {
+
+      return declaredFieldCache.get(base.getClass()).get(fieldName);
+    } else {
+
+      Optional<Field> fieldFound = new Mirror().on(base.getClass())
+              .reflectAll().fields()
+              .matching(field -> field.getName().equals(fieldName))
+              .stream().findFirst();
+
+      if (declaredFieldCache.containsKey(base.getClass())) {
+        declaredFieldCache.get(base.getClass()).put(fieldName, fieldFound);
+      } else {
+        Map<String, Optional<Field>> fieldClass = new HashMap<>();
+        fieldClass.put(fieldName, fieldFound);
+
+        declaredFieldCache.put(base.getClass(), fieldClass);
+      }
+
+      return fieldFound;
+    }
+
   }
 
   public static List<ChildNode> getValues(Object base, List<Class> withAnnotations) {
@@ -109,7 +144,14 @@ public class ReflectionUtils {
 
   public static Optional<Class> createClass(String className) {
     try {
-      return Optional.ofNullable(Class.forName(className));
+      if (classCache.containsKey(className)) {
+        return classCache.get(className);
+      } else {
+        Optional<Class> aClass = Optional.ofNullable(Class.forName(className));
+        classCache.put(className, aClass);
+        return aClass;
+      }
+
     } catch (ClassNotFoundException e) {
       return Optional.empty();
     }
