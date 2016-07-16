@@ -1,7 +1,6 @@
 package com.trex.clone;
 
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.trex.test_objects.hibernate_entities.BusinessProposal;
 import com.trex.test_objects.hibernate_entities.ProposalTemperature;
@@ -43,17 +42,7 @@ public class CloneObjectTest {
 
     negotiation.setItems(Lists.newArrayList(itemOne));
 
-    Stopwatch started = Stopwatch.createStarted();
     BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
-    System.out.println("Tempo gasto na execucao 1: " + started);
-
-    Stopwatch started2 = Stopwatch.createStarted();
-    BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
-    System.out.println("Tempo gasto na execucao 2: " + started2);
-
-    Stopwatch started3 = Stopwatch.createStarted();
-    BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
-    System.out.println("Tempo gasto na execucao 3: " + started3);
 
     assertThat(businessProposal.getId(), Matchers.is(1l));
     assertThat(businessProposal.getClient().getId(), Matchers.is(2l));
