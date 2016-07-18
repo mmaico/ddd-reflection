@@ -1,19 +1,32 @@
 package com.trex.test_objects.model.negotiation;
 
 
-
+import com.trex.shared.annotations.EntityReference;
+import com.trex.test_objects.hibernate_entities.BusinessProposal;
+import com.trex.test_objects.hibernate_entities.ProductLegacy;
+import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
 
 import java.math.BigDecimal;
 
+@EntityReference(ProposalSaleableItem.class)
 public class NegotiationItem {
 
   private Long id;
 
+  @EntityReference(value = ProductLegacy.class)
   private Product product;
 
   private Integer quantity;
 
   private BigDecimal price;
+
+  public NegotiationItem () {}
+  public NegotiationItem (Long id, Product product, Integer quantity, BigDecimal price) {
+    this.id = id;
+    this.product = product;
+    this.quantity = quantity;
+    this.price = price;
+  }
 
   public Long getId() {
     return id;
@@ -45,5 +58,19 @@ public class NegotiationItem {
 
   public void setPrice(BigDecimal price) {
     this.price = price;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+
+    if (o instanceof ProposalSaleableItem) {
+      return  ((ProposalSaleableItem) o).getId().equals(this.id);
+    }
+
+    if (o instanceof NegotiationItem) {
+      return  ((Negotiation) o).getId().equals(this.id);
+    }
+
+    return Boolean.FALSE;
   }
 }

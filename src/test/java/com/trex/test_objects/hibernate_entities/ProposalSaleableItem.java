@@ -22,6 +22,8 @@ public class ProposalSaleableItem {
 
   private Integer quantity = 0;
 
+  private ProductLegacy product;
+
 //  @ManyToOne
 //  @JoinColumn(name = "business_proposal_id")
 //  @ExcludeAuditingField
@@ -68,4 +70,11 @@ public class ProposalSaleableItem {
     this.businessProposal = businessProposal;
   }
 
+  public ProductLegacy getProduct() {
+    return product;
+  }
+
+  public void setProduct(ProductLegacy product) {
+    this.product = product;
+  }
 }

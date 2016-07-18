@@ -69,6 +69,7 @@ public abstract class CollectionUtils {
 	}
 
 	public static Boolean isCollection(Object object) {
+		if (object == null) return Boolean.FALSE;
 		return Collection.class.isAssignableFrom(object.getClass());
 	}
 }

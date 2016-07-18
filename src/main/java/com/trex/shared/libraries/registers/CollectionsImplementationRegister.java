@@ -1,6 +1,8 @@
 package com.trex.shared.libraries.registers;
 
 
+import com.trex.shared.libraries.ReflectionUtils;
+
 import java.util.*;
 
 public class CollectionsImplementationRegister {
@@ -20,5 +22,11 @@ public class CollectionsImplementationRegister {
 
   public Class<? extends Collection> getCollectionImpl(Class classInterface) {
     return collectionImplementations.get(classInterface);
+  }
+
+  public Collection getCollectionInstance(Class classInterface) {
+    Class<? extends Collection> aClass = collectionImplementations.get(classInterface);
+
+    return (Collection) ReflectionUtils.newInstance(aClass);
   }
 }

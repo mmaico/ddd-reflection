@@ -43,11 +43,11 @@ public class MirrorCollection {
     Collection originCollection = (Collection) originNode.getObject();
 
     for (Object itemOrigin: originCollection) {
-
-      com.google.common.base.Optional optional = Iterables.tryFind(destinationCollection, e -> e.equals(itemOrigin));
+      com.google.common.base.Optional optional = Iterables.tryFind(destinationCollection, e -> itemOrigin.equals(e));
       final Object found;
 
       if (!optional.isPresent()) {
+
         EntityReference annotation = originNode.getField().getAnnotation(EntityReference.class);
         found = ReflectionUtils.newInstance(annotation.value());
         destinationCollection.add(found);

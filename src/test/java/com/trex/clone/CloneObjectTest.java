@@ -79,4 +79,35 @@ public class CloneObjectTest {
 
     assertThat(businessProposal.getTemperature(), Matchers.is(ProposalTemperature.WON));
   }
+
+  @Test
+  public void shouldMergeObjects() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setId(1l);
+    negotiation.setCareOf("EU");
+    negotiation.setIntroduction("Introduction");
+    negotiation.setStatus(NegotiationStatus.CLOSED_WON);
+
+    Customer customer = new Customer();
+    customer.setId(2l);
+
+    Seller seller = new Seller();
+    seller.setId(3l);
+
+    negotiation.setCustomer(customer);
+    negotiation.setSeller(seller);
+
+    NegotiationItem itemOne = new NegotiationItem();
+    itemOne.setId(10l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    negotiation.setItems(Lists.newArrayList(itemOne));
+
+    BusinessProposal businessProposal = new BusinessProposal();
+    BusinessModelClone.from(negotiation).merge(businessProposal);
+
+    assertThat(businessProposal.getId(), Matchers.is(1l));
+    assertThat(businessProposal.getClient().getId(), Matchers.is(2l));
+    assertThat(businessProposal.getSeller().getId(), Matchers.is(3l));
+  }
 }

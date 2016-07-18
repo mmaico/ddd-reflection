@@ -97,4 +97,20 @@ public class Negotiation {
         this.setStatus(newStatus);
     }
   }
+
+  @Override
+  public boolean equals(Object o) {
+
+    if (o instanceof BusinessProposal) {
+      return  ((BusinessProposal) o).getId().equals(this.id);
+    }
+
+    if (o instanceof Negotiation) {
+      return  ((Negotiation) o).getId().equals(this.id);
+    }
+
+    return Boolean.FALSE;
+  }
+
+
 }

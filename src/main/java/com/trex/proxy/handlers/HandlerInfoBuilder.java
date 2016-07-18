@@ -55,7 +55,7 @@ public class HandlerInfoBuilder {
         return hibernateEntityField;
     }
 
-    public Object getMethodParam() {
+    public Object getParams() {
         return params[0];
     }
 

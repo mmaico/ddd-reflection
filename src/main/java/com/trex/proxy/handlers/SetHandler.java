@@ -1,19 +1,19 @@
 package com.trex.proxy.handlers;
 
 
-import com.trex.clone.BusinessModelClone;
-import com.trex.clone.MirrorObject;
 import com.trex.proxy.reflections.ReflectionProxyUtils;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
-import com.trex.shared.libraries.ReflectionUtils;
+import com.trex.shared.libraries.registers.CollectionsImplementationRegister;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Optional;
 
 import static com.trex.clone.BusinessModelClone.from;
 import static com.trex.proxy.reflections.ReflectionProxyUtils.*;
+import static com.trex.shared.libraries.CollectionUtils.isCollection;
 import static com.trex.shared.libraries.ReflectionUtils.invokeGetter;
 import static com.trex.shared.libraries.ReflectionUtils.invokeSetter;
 
@@ -40,18 +40,29 @@ public class SetHandler implements Handler {
 
         if (isDDDModel) {
             if (hibernateEntity != null) {
-                from(infoBuilder.getMethodParam()).merge(hibernateEntity);
+                from(infoBuilder.getParams(), fieldObjectModel).merge(hibernateEntity);
             } else {
                 EntityReference annotation = fieldObjectModel.getAnnotation(EntityReference.class);
-                Object resultMerged = from(infoBuilder.getObjectModel()).convertTo(annotation.value());
-                invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), resultMerged);
+                if (isCollection(fieldObjectModel.getType())) {
+                    Collection collection = CollectionsImplementationRegister
+                            .getInstance().getCollectionInstance(hibernateEntityField.get().getType());
+
+                    ((Collection)infoBuilder.getParams()).stream()
+                            .forEach(item -> collection.add(from(item).convertTo(annotation.value())));
+
+                    invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), collection);
+                } else {
+                    Object resultMerged = from(infoBuilder.getObjectModel()).convertTo(annotation.value());
+                    invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), resultMerged);
+                }
+
             }
         } else {
             if (fieldObjectModel.getAnnotation(CustomConverter.class) != null) {
-                Object objectConverted = invokeCustomConverterReverse(fieldObjectModel, infoBuilder.getMethodParam());
+                Object objectConverted = invokeCustomConverterReverse(fieldObjectModel, infoBuilder.getParams());
                 invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), objectConverted);
             } else {
-                invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), infoBuilder.getMethodParam());
+                invokeSetter(infoBuilder.getHibernateEntity(), hibernateEntityField.get(), infoBuilder.getParams());
 
             }
         }

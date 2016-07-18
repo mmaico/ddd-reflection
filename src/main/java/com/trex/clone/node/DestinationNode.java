@@ -1,15 +1,14 @@
 package com.trex.clone.node;
 
 
-
-
 import com.trex.shared.libraries.ReflectionUtils;
 import com.trex.shared.libraries.registers.CollectionsImplementationRegister;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
+
+import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 public class DestinationNode {
 
@@ -37,7 +36,7 @@ public class DestinationNode {
     }
 
     public boolean isClassCollection() {
-        return  field.isPresent() && (Collection.class.isAssignableFrom(field.get().getType()) || Map.class.isAssignableFrom(field.get().getType()));
+        return isCollection(target) ||  field.isPresent() && isCollection(field.get().getType());
     }
 
     public Optional<Field> getField() {

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.trex.clone.reflections.ReflectionCloneUtils.getPropertyName;
+import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 
 public class OriginNode {
@@ -36,7 +37,7 @@ public class OriginNode {
     public boolean isClassCollection() {
 
 
-        return  field != null  && CollectionUtils.isCollection(field.getType());
+        return isCollection(origin) ||  field != null  && isCollection(field.getType());
     }
 
     public Object getObject() {
