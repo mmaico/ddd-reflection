@@ -1,4 +1,4 @@
-# O que é o DDD-Reflaction
+# O que é o DDD-Reflection
 
 DDD reflection tem o propósito de facilitar que seu dominio se torne idependente das entidades do hibernate.
 Para isso foi desenvolvido dois utilitários que permite mapear seu modelo com as entidades do hibernate.
