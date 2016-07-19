@@ -45,6 +45,8 @@ Exemplo:
    public class Product {
        private Long id;
        private String name;
+       
+       //getters and setters
    }
    ```
 
@@ -56,7 +58,7 @@ Exemplo:
 
   ```javascript
   @EntityReference(BusinessProposal.class)
-  Negotiation {
+  public class Negotiation {
 
     private Long id;
 
@@ -72,7 +74,7 @@ Exemplo:
   }
 
   @EntityReference(User.class)
-  Seller {
+  public class Seller {
     private Long id;
     private String name;
 
@@ -83,7 +85,10 @@ Exemplo:
   public class SaleableNegociated {
    		private Long id;
 		private BigDecimal price;
-		Product product;
+		
+		@EntityReference(Product.class, fieldName="product")
+		private Saleable saleable;
+		
 		private Integer quantity;
 
 		//getters and setters
@@ -93,6 +98,8 @@ Exemplo:
   public class Saleable {
     private Long id;
     private String name;
+    
+    //getters and setters
   }
   ```
 
@@ -190,7 +197,7 @@ Exemplo:
 
    > Internamente o proxy faz algo parecido com isso <br />
    > User user = businessProposal.getUser(); <br />
-   > Seller sellerProxy =  BusinessModelProxy.from(user).proxy(Seller.class);
+   > Seller sellerProxy =  BusinessModelProxy.from(user).proxy(Seller.class); <br />
    > return sellerProxy;
 
   No seu código irá aparece somente isso Seller seller = negotiationProxy.getSeller();
