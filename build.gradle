@@ -33,4 +33,5 @@ dependencies {
     compile("net.vidageek:mirror:1.6.1")
     compile("commons-beanutils:commons-beanutils:1.9.2")
 }
-
+//Generate release.
+//gradle release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=1.1.0 -Prelease.newVersion=1.2.0-SNAPSHOT
