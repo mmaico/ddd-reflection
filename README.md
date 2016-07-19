@@ -189,7 +189,7 @@ Exemplo:
   objeto de dominio e coloca-lo num proxy, como o exemplo abaixo:
 
    > Internamente o proxy faz algo parecido com isso <br />
-   > User user = businessProposal.getUser();
+   > User user = businessProposal.getUser(); <br />
    > Seller sellerProxy =  BusinessModelProxy.from(user).proxy(Seller.class);
    > return sellerProxy;
 
