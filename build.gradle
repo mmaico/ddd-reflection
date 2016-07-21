@@ -69,6 +69,8 @@ task writeNewPom << {
     }.writeTo("$buildDir/libs/pom.xml")
 }
 
+build.dependsOn writeNewPom
+
 bintray {
     user = property('user')
     key = property('key')
@@ -89,6 +91,7 @@ bintray {
         }
     }
 }
+
 
 
 //Generate release.
