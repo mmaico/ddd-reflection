@@ -42,7 +42,7 @@ dependencies {
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
-    from javadoc
+    from 'build/docs/javadoc'
 }
 
 task sourcesJar(type: Jar) {
@@ -65,21 +65,28 @@ task writeNewPom << {
                     distribution 'repo'
                 }
             }
+
+            developers {
+                developer {
+                    id "mmaico"
+                    name "Marcelo Maico"
+                    email "mmaico@gmail.com"
+                }
+            }
+
         }
-    }.writeTo("$buildDir/libs/pom.xml")
+    }.writeTo("$buildDir/libs/$project.name-$project.version" + ".xml")
 }
 
 build.dependsOn writeNewPom
+build.dependsOn javadocJar
 
 bintray {
-    user = property('user')
-    key = property('key')
-    filesSpec {
-        from 'build/libs'
-        into 'standalone_files/level1'
-    }
+    user = project.hasProperty('user') ? project.user : System.getenv("user")
+    key = project.hasProperty('key') ? project.key : System.getenv("key")
     pkg {
-        repo = 'generic'
+        repo = 'jfrog-jars'
+        userOrg = 'jfrog'
         name = 'ddd-reflection'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/mmaico/ddd-reflection.git'
@@ -91,7 +98,6 @@ bintray {
         }
     }
 }
-
 
 
 //Generate release.
