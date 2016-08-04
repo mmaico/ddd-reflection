@@ -12,6 +12,9 @@ buildscript {
     }
 }
 
+def siteUrl = 'https://github.com/mmaico/ddd-reflection'      // Homepage URL of the library
+def gitUrl = 'https://github.com/mmaico/ddd-reflection.git'
+def issueUrl = 'https://github.com/mmaico/ddd-reflection.git/issues'
 group 'com.trex'
 version = getProperty('version')
 
@@ -94,9 +97,9 @@ bintray {
         repo = 'maven'
         name = 'ddd-reflection'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/mmaico/ddd-reflection.git'
-        websiteUrl = 'https://github.com/mmaico/ddd-reflection'
-        issueTrackerUrl = 'https://github.com/mmaico/ddd-reflection.git/issues'
+        vcsUrl = gitUrl
+        websiteUrl = siteUrl
+        issueTrackerUrl = issueUrl
         publish = true
         version {
             name = '1.5.0'
