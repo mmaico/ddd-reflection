@@ -84,12 +84,17 @@ build.dependsOn javadocJar
 bintray {
     user = project.hasProperty('user') ? project.user : System.getenv("user")
     key = project.hasProperty('key') ? project.key : System.getenv("key")
+    filesSpec {
+        from 'build/libs'
+        into 'standalone_files/level1'
+    }
     pkg {
         repo = 'maven'
         name = 'ddd-reflection'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/mmaico/ddd-reflection.git'
-        publicDownloadNumbers = true
+        websiteUrl = 'https://github.com/mmaico/ddd-reflection'
+        issueTrackerUrl = 'https://github.com/mmaico/ddd-reflection.git/issues'
         version {
             name = '1.4.0'
             desc = 'DDD Reflection release 1.4.0'
