@@ -91,10 +91,10 @@ bintray {
         vcsUrl = 'https://github.com/mmaico/ddd-reflection.git'
         publicDownloadNumbers = true
         version {
-            name = getProperty('version')
-            desc = 'DDD Reflection release' + getProperty('version')
+            name = $project.version
+            desc = 'DDD Reflection release' + $project.version
             released  = new Date()
-            vcsTag = getProperty('version')
+            vcsTag = $project.version
         }
     }
 }
