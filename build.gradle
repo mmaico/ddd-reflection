@@ -79,10 +79,11 @@ bintray {
         into 'standalone_files/level1'
     }
     pkg {
-        repo = 'generic'
+        repo = 'maven'
         name = 'ddd-reflection'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/mmaico/ddd-reflection.git'
+        publicDownloadNumbers = true
         version {
             name = getProperty('version')
             desc = 'DDD Reflection release' + getProperty('version')
