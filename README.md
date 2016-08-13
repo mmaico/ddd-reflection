@@ -9,8 +9,12 @@ Instalação:
     <dependency>
       <groupId>com.trex</groupId>
       <artifactId>ddd-reflection</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
+```
+
+```xml
+    compile("com.trex:ddd-reflection:1.7.0")
 ```
 
 Exemplo:
@@ -148,7 +152,8 @@ Exemplo:
   ```
 
   Agora suponha que já existe uma entidade BusinessProposal no bando de dados com o ID 1 então precisamos apenas
-  atualizar-la para isso a implementacao do nosso repository seria assim:
+  atualizar-la para isso a implementacao do nosso repository usa o BusinessModelClone.from(negotiation).merge(businessProposalLoaded)
+  esse metodo suporta circular reference.
 
   ```javascript
   //Implementacao para suporta updates
