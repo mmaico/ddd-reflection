@@ -1,10 +1,22 @@
-# O que é o DDD-Reflection
+# O que é o DDD-Reflection ?
 
 
 DDD reflection tem o propósito de facilitar que seu dominio se torne idependente das entidades do hibernate.
 Para isso foi desenvolvido dois utilitários que permite mapear seu modelo com as entidades do hibernate.
 
-Instalação:
+Funciona parecido com o BeanUtils, entretando ele sabe converter uma entidade na outra, respeitando as referencias
+e suportando referencias circulares.
+
+##Indice
+* [Instalação](#instalacao)
+* [Entidades de exemplos](#entidades-de-exemplos)
+* [Mapeamento das entidades](#mapeamento-das-entidades)
+* [Convertendo um objeto em um novo objeto](#convertendo-um-objeto-em-um-novo-objeto)
+* [Fazendo merge de um objeto no outro](#fazendo-merge-de-um-objeto-no-outro)
+* [Criando proxy de um objeto do hibernate(ou qualquer outra fonte de dados)](#criando-proxy-de-um-objeto-do-hibernate-ou-qualquer-outra-fonte-de-dados)
+
+
+##Instalação:
 ```xml
     <dependency>
       <groupId>com.trex</groupId>
@@ -17,7 +29,8 @@ Instalação:
     compile("com.trex:ddd-reflection:1.7.0")
 ```
 
-Exemplo:
+##Entidades de exemplo
+
   Hibernate entities
 
   ```javascript
@@ -63,6 +76,8 @@ Exemplo:
        //getters and setters
    }
    ```
+ 
+## Mapeamento das entidades
 
   Essas entidades respeitam o banco de dados e eu preciso que meu dominio fale de negócio e não de banco,
   também não posso deixar que uma alteração em uma tabela ou conjuntos de tabelas alterem a forma como meu
@@ -116,6 +131,7 @@ Exemplo:
     //getters and setters
   }
   ```
+## Convertendo um objeto em um novo objeto
 
   Tendo as entidades devidamente mapeadas agora eu posso receber os valores da interface, passar pelo meu serviço
   e antes de persistir eu preciso fazer a conversão para o objeto do banco de dados(hibernate)
@@ -150,7 +166,9 @@ Exemplo:
 
   }
   ```
-
+  
+## Fazendo merge de um objeto no outro
+    
   Agora suponha que já existe uma entidade BusinessProposal no bando de dados com o ID 1 então precisamos apenas
   atualizar-la para isso a implementacao do nosso repository usa o BusinessModelClone.from(negotiation).merge(businessProposalLoaded)
   esse metodo suporta circular reference.
@@ -176,6 +194,8 @@ Exemplo:
 
   }
   ```
+  
+## Criando proxy de um objeto do hibernate(ou qualquer outra fonte de dados)
 
   Proxy: Um grande problema que faz com que os usuários acabem por usar entidades do hibernade dentro de seus dominos
   e o tornando um pojo é a dificuldade em criar uma camada anti corrupção. Esse camada deve ser criada idependente
