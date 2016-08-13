@@ -9,7 +9,7 @@ e suportando referencias circulares.
 
 ##Indice
 * [Instalação](#instalação)
-* [Entidades de exemplos](#entidades-de-exemplos)
+* [Entidades de exemplo](#entidades-de-exemplo)
 * [Mapeamento das entidades](#mapeamento-das-entidades)
 * [Convertendo um objeto em um novo objeto](#convertendo-um-objeto-em-um-novo-objeto)
 * [Fazendo merge de um objeto no outro](#fazendo-merge-de-um-objeto-no-outro)
@@ -195,7 +195,7 @@ e suportando referencias circulares.
   }
   ```
   
-## Criando proxy de um objeto do hibernate(ou qualquer outra fonte de dados)
+## Criando proxy de um objeto do hibernate ou qualquer outra fonte de dados
 
   Proxy: Um grande problema que faz com que os usuários acabem por usar entidades do hibernade dentro de seus dominos
   e o tornando um pojo é a dificuldade em criar uma camada anti corrupção. Esse camada deve ser criada idependente
