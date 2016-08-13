@@ -306,8 +306,7 @@ Exemplo
             private Address address;
             
             //getters and setters
-        }
-   
+        }   
    ```
 No seu controller você irá recuperar do HttpServletRequest os attributos que vieram do formulario
 como exemplo:
@@ -315,7 +314,7 @@ como exemplo:
     ```javascript
         //Exemplo usando Spring MVC
         public  @ResponseBody String save(@ModelAttribute User user) { 
-          user.setUpdateAttributes(new HashSet("name", birthDate)
+          user.setUpdateAttributes(new HashSet("name", "birthDate");
           
           User userLoaded = repository.findOne(user.getId());
           
