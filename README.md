@@ -289,7 +289,7 @@ persistido no bando de dados. Isso evita que você tenha que fazer farios metodo
 de dados de uma entidade.
 
 Exemplo
-   ```
+   ```javascript
         public class AbstractEntity {
             private Long id;
             
@@ -311,7 +311,7 @@ Exemplo
 No seu controller você irá recuperar do HttpServletRequest os attributos que vieram do formulario
 como exemplo:
 
-    ```
+    ```javascript
         //Exemplo usando Spring MVC
         public  @ResponseBody String save(@ModelAttribute User user) { 
           user.setUpdateAttributes(new HashSet("name", "birthDate");
