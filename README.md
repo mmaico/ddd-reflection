@@ -321,5 +321,5 @@ como exemplo:
           BusinessModelClone.from(user).merge(userLoaded);
         }    
     ```
-No exemplo acima somente o atributo nome e birthDate será mergeado para o objeto do banco de dados.
+No exemplo acima somente o atributo name e birthDate serão mergeado para o objeto do banco de dados.
     
