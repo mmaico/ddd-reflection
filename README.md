@@ -313,7 +313,6 @@ No seu controller você irá recuperar do HttpServletRequest os attributos que v
 como exemplo:
 
     ```javascript
-
         //Exemplo usando Spring MVC
         public  @ResponseBody String save(@ModelAttribute User user) { 
           user.setUpdateAttributes(new HashSet("name", birthDate)
@@ -321,8 +320,7 @@ como exemplo:
           User userLoaded = repository.findOne(user.getId());
           
           BusinessModelClone.from(user).merge(userLoaded);
-        }
-    
+        }    
     ```
 No exemplo acima somente o atributo nome e birthDate será mergeado para o objeto do banco de dados.
     
