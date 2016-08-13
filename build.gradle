@@ -99,10 +99,10 @@ bintray {
         issueTrackerUrl = issueUrl
         publish = true
         version {
-            name = '1.6.0'
-            desc = 'DDD Reflection release 1.6.0'
+            name = '1.7.0'
+            desc = 'DDD Reflection release 1.7.0'
             released  = new Date()
-            vcsTag = '1.6.0'
+            vcsTag = '1.7.0'
         }
     }
 }
@@ -113,7 +113,7 @@ publishing {
             artifact jar
             groupId 'com.trex'
             artifactId 'ddd-reflection'
-            version '1.6.0'
+            version '1.7.0'
         }
     }
 }
