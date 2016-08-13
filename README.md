@@ -8,12 +8,12 @@ Funciona parecido com o BeanUtils, entretando ele sabe converter uma entidade na
 e suportando referencias circulares.
 
 ##Indice
-* [Instalação](#instalacao)
+* [Instalação](#instalação)
 * [Entidades de exemplos](#entidades-de-exemplos)
 * [Mapeamento das entidades](#mapeamento-das-entidades)
 * [Convertendo um objeto em um novo objeto](#convertendo-um-objeto-em-um-novo-objeto)
 * [Fazendo merge de um objeto no outro](#fazendo-merge-de-um-objeto-no-outro)
-* [Criando proxy de um objeto do hibernate(ou qualquer outra fonte de dados)](#criando-proxy-de-um-objeto-do-hibernate-ou-qualquer-outra-fonte-de-dados)
+* [Criando proxy de um objeto do hibernate ou qualquer outra fonte de dados](#criando-proxy-de-um-objeto-do-hibernate-ou-qualquer-outra-fonte-de-dados)
 
 
 ##Instalação:
