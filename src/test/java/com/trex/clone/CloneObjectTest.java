@@ -2,6 +2,7 @@ package com.trex.clone;
 
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.trex.test_objects.hibernate_entities.BusinessProposal;
 import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
 import com.trex.test_objects.hibernate_entities.ProposalTemperature;
@@ -11,14 +12,13 @@ import com.trex.test_objects.model.negotiation.Negotiation;
 import com.trex.test_objects.model.negotiation.NegotiationItem;
 import com.trex.test_objects.model.negotiation.NegotiationStatus;
 import com.trex.test_objects.model.seller.Seller;
-import org.hamcrest.Matchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 public class CloneObjectTest {
 
@@ -137,6 +137,47 @@ public class CloneObjectTest {
     assertThat(businessProposal.getInformation().getBusinessProposal().getId(), is(22l));
   }
 
+  @Test
+  public void shouldCopyOnlyFieldsInformed() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setId(22l);
+    negotiation.setCareOf("Marcelo Maico");
+    negotiation.setIntroduction("Introduction here");
+
+    negotiation.setUpdateAttributes(Sets.newHashSet("careOf", "introduction"));
+
+    BusinessProposal businessProposal = new BusinessProposal();
+
+    BusinessModelClone.from(negotiation).merge(businessProposal);
+
+    MatcherAssert.assertThat(businessProposal.getCareOf(), is("Marcelo Maico"));
+    MatcherAssert.assertThat(businessProposal.getIntroduction(), is("Introduction here"));
+    MatcherAssert.assertThat(businessProposal.getId(), nullValue());
+  }
+
+  @Test
+  public void shouldNoCopyFieldOfNestedObjectWhenNoPresentInUpdateAttributes() {
+    Negotiation negotiation = new Negotiation();
+    negotiation.setId(22l);
+    negotiation.setCareOf("Marcelo Maico");
+    negotiation.setIntroduction("Introduction here");
+
+    AdditionalInformation information = new AdditionalInformation();
+    information.setId(10l);
+
+    negotiation.setInformation(information);
+
+    negotiation.setUpdateAttributes(Sets.newHashSet("careOf"));
+
+    BusinessProposal businessProposal = new BusinessProposal();
+
+    BusinessModelClone.from(negotiation).merge(businessProposal);
+
+    MatcherAssert.assertThat(businessProposal.getCareOf(), is("Marcelo Maico"));
+    MatcherAssert.assertThat(businessProposal.getIntroduction(), nullValue());
+    MatcherAssert.assertThat(businessProposal.getInformation(), nullValue());
+    MatcherAssert.assertThat(businessProposal.getId(), nullValue());
+  }
 
   private Negotiation getObjectWithCircularReference() {
     Negotiation negotiation = new Negotiation();

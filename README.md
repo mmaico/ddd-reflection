@@ -14,6 +14,7 @@ e suportando referencias circulares.
 * [Convertendo um objeto em um novo objeto](#convertendo-um-objeto-em-um-novo-objeto)
 * [Fazendo merge de um objeto no outro](#fazendo-merge-de-um-objeto-no-outro)
 * [Criando proxy de um objeto do hibernate ou qualquer outra fonte de dados](#criando-proxy-de-um-objeto-do-hibernate-ou-qualquer-outra-fonte-de-dados)
+* [Copiando somente attributos informados](#copiando-somente-attributos-informados)
 
 
 ##Instalação:
@@ -34,47 +35,47 @@ e suportando referencias circulares.
   Hibernate entities
 
   ```javascript
-   public class BusinessProposal {
-   	    private Long id
-   	    private User user;
-   	    private List<ProposalSaleableItem> items;
-   	    private ProposalTemperature temperature;
-
-   	    //getters and setters
-   }
-
-   public class ProposalSaleableItem {
-   		private Long id;
-		private BigDecimal price;
-		private Product product;
-		private Integer quantity;
-
-		//getters and setters
-   }
-
-
-   public class User {
-   		private Long id;
-   		private String name;
-   		private List<Document> documents;
-
-   		//getters and setters
-   }
-
-   public class Document {
-   		public enum DocumentTypeEnum {PASSPORT, SOCIAL_SECURITY_CARD}
-   		private String document;
-  		private DocumentTypeEnum type;
-
-  		//getters and setters
-   }
-
-   public class Product {
-       private Long id;
-       private String name;
-       
-       //getters and setters
-   }
+       public class BusinessProposal {
+            private Long id
+            private User user;
+            private List<ProposalSaleableItem> items;
+            private ProposalTemperature temperature;
+    
+            //getters and setters
+       }
+    
+       public class ProposalSaleableItem {
+            private Long id;
+            private BigDecimal price;
+            private Product product;
+            private Integer quantity;
+    
+            //getters and setters
+       }
+    
+    
+       public class User {
+            private Long id;
+            private String name;
+            private List<Document> documents;
+    
+            //getters and setters
+       }
+    
+       public class Document {
+            public enum DocumentTypeEnum {PASSPORT, SOCIAL_SECURITY_CARD}
+            private String document;
+            private DocumentTypeEnum type;
+    
+            //getters and setters
+       }
+    
+       public class Product {
+           private Long id;
+           private String name;
+           
+           //getters and setters
+       }
    ```
  
 ## Mapeamento das entidades
@@ -86,50 +87,50 @@ e suportando referencias circulares.
   Criando minhas entidades de dominio com os mapeamentos para a entidade de Banco de dados.
 
   ```javascript
-  @EntityReference(BusinessProposal.class)
-  public class Negotiation {
-
-    private Long id;
-
-    @EntityReference(User.class, fieldName="user")
-    private Seller seller;
-
-    @EntityReference(ProposalSaleableItem.class, fieldName="items")
-    private List<SaleableNegociated> itemsNegotiated;
-
-    private Status status;
-
-    //getters and setters
-  }
-
-  @EntityReference(User.class)
-  public class Seller {
-    private Long id;
-    private String name;
-
-    //getters and setters
-  }
-
-  @EntityReference(ProposalSaleableItem.class)
-  public class SaleableNegociated {
-   		private Long id;
-		private BigDecimal price;
-		
-		@EntityReference(Product.class, fieldName="product")
-		private Saleable saleable;
-		
-		private Integer quantity;
-
-		//getters and setters
-   }
-
-  @EntityReference(Product.class)
-  public class Saleable {
-    private Long id;
-    private String name;
+      @EntityReference(BusinessProposal.class)
+      public class Negotiation {
     
-    //getters and setters
-  }
+        private Long id;
+    
+        @EntityReference(User.class, fieldName="user")
+        private Seller seller;
+    
+        @EntityReference(ProposalSaleableItem.class, fieldName="items")
+        private List<SaleableNegociated> itemsNegotiated;
+    
+        private Status status;
+    
+        //getters and setters
+      }
+    
+      @EntityReference(User.class)
+      public class Seller {
+        private Long id;
+        private String name;
+    
+        //getters and setters
+      }
+    
+      @EntityReference(ProposalSaleableItem.class)
+      public class SaleableNegociated {
+            private Long id;
+            private BigDecimal price;
+            
+            @EntityReference(Product.class, fieldName="product")
+            private Saleable saleable;
+            
+            private Integer quantity;
+    
+            //getters and setters
+       }
+    
+      @EntityReference(Product.class)
+      public class Saleable {
+        private Long id;
+        private String name;
+        
+        //getters and setters
+      }
   ```
 ## Convertendo um objeto em um novo objeto
 
@@ -138,33 +139,33 @@ e suportando referencias circulares.
   exemplo:
 
   ```javascript
-  public class NegotiationService {
-
-      private NegotiationRepository repository;
-
-      public void save(Negotiation negotiation) {
-
-          repository.save(negotiation)
+      public class NegotiationService {
+    
+          private NegotiationRepository repository;
+    
+          public void save(Negotiation negotiation) {
+    
+              repository.save(negotiation)
+          }
+    
       }
-
-  }
-
-
-  public interface NegotiationRepository {
-
-      public void save(Negotiation negotiation);
-  }
-
-  public class NegotiationRepositoryHibernate implements NegotiationRepository {
-
-      private BusinessProposalRepository repository;
-
-      public void save(Negotiation negotiation) {
-          BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
-          repository.save(businessProposal)
+    
+    
+      public interface NegotiationRepository {
+    
+          public void save(Negotiation negotiation);
       }
-
-  }
+    
+      public class NegotiationRepositoryHibernate implements NegotiationRepository {
+    
+          private BusinessProposalRepository repository;
+    
+          public void save(Negotiation negotiation) {
+              BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
+              repository.save(businessProposal)
+          }
+    
+      }
   ```
   
 ## Fazendo merge de um objeto no outro
@@ -174,25 +175,25 @@ e suportando referencias circulares.
   esse metodo suporta circular reference.
 
   ```javascript
-  //Implementacao para suporta updates
-  public class NegotiationRepositoryHibernate implements NegotiationRepository {
-
-      private BusinessProposalRepository repository;
-
-      public void save(Negotiation negotiation) {
-          if (negotiation.isNew()) {
-            BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
-            repository.save(businessProposal)
-          } else {
-              BusinessProposal businessProposalLoaded = repository.findOne(negotiation.getId());
-              BusinessModelClone.from(negotiation).merge(businessProposalLoaded);
-
-              repository.save(businessProposalLoaded);
+      //Implementacao para suporta updates
+      public class NegotiationRepositoryHibernate implements NegotiationRepository {
+    
+          private BusinessProposalRepository repository;
+    
+          public void save(Negotiation negotiation) {
+              if (negotiation.isNew()) {
+                BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
+                repository.save(businessProposal)
+              } else {
+                  BusinessProposal businessProposalLoaded = repository.findOne(negotiation.getId());
+                  BusinessModelClone.from(negotiation).merge(businessProposalLoaded);
+    
+                  repository.save(businessProposalLoaded);
+              }
+    
           }
-
+    
       }
-
-  }
   ```
   
 ## Criando proxy de um objeto do hibernate ou qualquer outra fonte de dados
@@ -207,20 +208,20 @@ e suportando referencias circulares.
   Exemplo:
 
   ```javascript
-    //Implementacao para o findOne
-  public class NegotiationRepositoryHibernate implements NegotiationRepository {
-
-      private BusinessProposalRepository repository;
-
-      public Negotiation findOne(Long id) {
-          BusinessProposal businessProposalLoaded = repository.findOne(id);
-
-          Negotiation negotiationProxy = BusinessModelProxy.from(businessProposalLoaded).proxy(Negotiation.class);
-
-          return negotiationProxy;
+      //Implementacao para o findOne
+      public class NegotiationRepositoryHibernate implements NegotiationRepository {
+    
+          private BusinessProposalRepository repository;
+    
+          public Negotiation findOne(Long id) {
+              BusinessProposal businessProposalLoaded = repository.findOne(id);
+    
+              Negotiation negotiationProxy = BusinessModelProxy.from(businessProposalLoaded).proxy(Negotiation.class);
+    
+              return negotiationProxy;
+          }
+    
       }
-
-  }
   ```
 
   Esse trecho de código irá buscar as informações no objeto do banco de dados(BusinessProposal) usando o lazzy load
@@ -250,20 +251,20 @@ e suportando referencias circulares.
   Quando você carrega o objeto do banco de dados e ele está dentro do proxy, exemplo:
 
   ```javascript
-    //Implementacao para o findOne
-  public class NegotiationRepositoryHibernate implements NegotiationRepository {
-
-      private BusinessProposalRepository repository;
-
-      public Negotiation findOne(Long id) {
-          BusinessProposal businessProposalLoaded = repository.findOne(id);
-
-          Negotiation negotiationProxy = BusinessModelProxy.from(businessProposalLoaded).proxy(Negotiation.class);
-
-          return negotiationProxy;
+      //Implementacao para o findOne
+      public class NegotiationRepositoryHibernate implements NegotiationRepository {
+    
+          private BusinessProposalRepository repository;
+    
+          public Negotiation findOne(Long id) {
+              BusinessProposal businessProposalLoaded = repository.findOne(id);
+    
+              Negotiation negotiationProxy = BusinessModelProxy.from(businessProposalLoaded).proxy(Negotiation.class);
+    
+              return negotiationProxy;
+          }
+    
       }
-
-  }
   ```
 
   Quando eu carrego o objeto Negotitation negotiationLoaded = negotiationRepository.findOne(1l)
@@ -276,3 +277,52 @@ e suportando referencias circulares.
   mais um exemplo:
 
   > Negotitation negotiationLoaded = negotiationRepository.findOne(1l)
+
+##Copiando somente attributos informados
+
+Você pode usar a annotação @UpdateAttributes para informar quais atributos você deseja copiar.
+Isso se torna muito util quando você tem um formulario na tela onde pede somente o nome e data de nascimento do 
+usuário, portanto é somente essas informações que devem sofrer alterações no merge com o objeto do hibernate.
+
+Essa técnica é muito usada no Ruby On Rails onde ele armazena os attributos que estavam na tela e que será 
+persistido no bando de dados. Isso evita que você tenha que fazer farios metodos direfentes para modificação
+de dados de uma entidade.
+
+Exemplo
+   ```javascript
+        public class AbstractEntity {
+            private Long id;
+            
+            @UpdateAttributes 
+            private Set<String> updateAttributes;
+            
+            //getters and setters
+        }
+    
+        public class User extends AbstractEntity {
+            private String name;
+            private Date birthDate;
+            private String lastName;
+            private Address address;
+            
+            //getters and setters
+        }
+   
+   ```
+No seu controller você irá recuperar do HttpServletRequest os attributos que vieram do formulario
+como exemplo:
+
+    ```javascript
+
+        //Exemplo usando Spring MVC
+        public  @ResponseBody String save(@ModelAttribute User user) { 
+          user.setUpdateAttributes(new HashSet("name", birthDate)
+          
+          User userLoaded = repository.findOne(user.getId());
+          
+          BusinessModelClone.from(user).merge(userLoaded);
+        }
+    
+    ```
+No exemplo acima somente o atributo nome e birthDate será mergeado para o objeto do banco de dados.
+    

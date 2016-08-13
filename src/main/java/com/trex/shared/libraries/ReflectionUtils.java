@@ -37,6 +37,16 @@ public class ReflectionUtils {
 
   private static final String GETTER_PREFIX = "get";
 
+
+  public static List<Field> getFields(Object base, Collection<String> fieldsToUpdate) {
+    if (fieldsToUpdate.isEmpty()) {
+      return getFields(base);
+    } else {
+      return getFields(base).stream()
+              .filter(field -> fieldsToUpdate.contains(field.getName())).collect(Collectors.toList());
+    }
+  }
+
   public static List<Field> getFields(Object base) {
 
     if (declaredFieldsCache.get(base.getClass()) == null) {
@@ -55,6 +65,13 @@ public class ReflectionUtils {
         .reflectAll().fields()
         .matching(field -> field.getAnnotation(annotation) != null && field.getName().equals(fieldName))
         .stream().findFirst();
+  }
+
+  public static Optional<Field> getField(Object base, Class annotation) {
+    return new Mirror().on(base.getClass())
+            .reflectAll().fields()
+            .matching(field -> field.getAnnotation(annotation) != null)
+            .stream().findFirst();
   }
 
   public static Optional<Field> getField(Object base, String fieldName) {

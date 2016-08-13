@@ -5,11 +5,13 @@ package com.trex.test_objects.model.negotiation;
 import com.trex.NegotiationStatusEnumConverter;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.shared.annotations.UpdateAttributes;
 import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.customer.Customer;
 import com.trex.test_objects.model.seller.Seller;
 
 import java.util.List;
+import java.util.Set;
 
 @EntityReference(BusinessProposal.class)
 public class Negotiation {
@@ -34,6 +36,9 @@ public class Negotiation {
 
   @EntityReference(value = Information.class)
   private AdditionalInformation information;
+
+  @UpdateAttributes
+  private Set<String> updateAttributes;
 
 
   public Long getId() {
@@ -98,6 +103,14 @@ public class Negotiation {
 
   public void setInformation(AdditionalInformation information) {
     this.information = information;
+  }
+
+  public Set<String> getUpdateAttributes() {
+    return updateAttributes;
+  }
+
+  public void setUpdateAttributes(Set<String> updateAttributes) {
+    this.updateAttributes = updateAttributes;
   }
 
   public void changeStatusTo(NegotiationStatus newStatus) {
