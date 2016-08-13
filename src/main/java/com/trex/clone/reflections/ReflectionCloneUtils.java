@@ -49,6 +49,9 @@ public class ReflectionCloneUtils {
   }
 
   public static Object newInstanceByReference(Object origin) {
+
+    if (origin == null) return null;
+
     Optional<EntityReference> annotation = Optional.ofNullable(origin.getClass().getAnnotation(EntityReference.class));
 
     if (annotation.isPresent()) {

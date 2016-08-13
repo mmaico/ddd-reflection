@@ -5,12 +5,9 @@ package com.trex.test_objects.model.negotiation;
 import com.trex.NegotiationStatusEnumConverter;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.customer.Customer;
 import com.trex.test_objects.model.seller.Seller;
-import com.trex.test_objects.hibernate_entities.BusinessProposal;
-import com.trex.test_objects.hibernate_entities.Person;
-import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
-import com.trex.test_objects.hibernate_entities.User;
 
 import java.util.List;
 
@@ -34,6 +31,9 @@ public class Negotiation {
 
   @CustomConverter(convert = NegotiationStatusEnumConverter.class, fieldName = "temperature")
   private NegotiationStatus status;
+
+  @EntityReference(value = Information.class)
+  private AdditionalInformation information;
 
 
   public Long getId() {
@@ -90,6 +90,14 @@ public class Negotiation {
 
   public void setCareOf(String careOf) {
     this.careOf = careOf;
+  }
+
+  public AdditionalInformation getInformation() {
+    return information;
+  }
+
+  public void setInformation(AdditionalInformation information) {
+    this.information = information;
   }
 
   public void changeStatusTo(NegotiationStatus newStatus) {

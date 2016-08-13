@@ -1,19 +1,18 @@
 package com.trex.clone;
 
 
-
-
-import com.trex.clone.node.PreviousNode;
+import com.google.common.collect.Sets;
 import com.trex.clone.node.TreeMirrorNode;
-import com.trex.shared.libraries.CollectionUtils;
 import com.trex.shared.libraries.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.trex.clone.node.DestinationNode.newDestNode;
 import static com.trex.clone.node.OriginNode.newOrigin;
+import static com.trex.clone.node.PreviousNode.newPreviousNode;
+import static com.trex.clone.node.TreeMirrorNode.newOrigNode;
 import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 
@@ -40,11 +39,14 @@ public class BusinessModelClone {
 
   public void merge(Object hibernateEntity) {
 
-    TreeMirrorNode initialTreeMirrorNode = TreeMirrorNode.newOrigNode(newOrigin(object, this.fieldModel), newDestNode(hibernateEntity,
-            Optional.empty(), PreviousNode.newPreviousNode(null, null)));
+    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, this.fieldModel), newDestNode(hibernateEntity,
+            Optional.empty(), newPreviousNode(null, null)), Sets.newHashSet());
 
     if (isCollection(object) && isCollection(hibernateEntity)) {
-      new MirrorCollection().mirror(initialTreeMirrorNode.getOrigin(), initialTreeMirrorNode.getDest());
+      TreeMirrorNode treeNode = newOrigNode(initialTreeMirrorNode.getOrigin(),
+              initialTreeMirrorNode.getDest(), initialTreeMirrorNode.getNestedObjects());
+
+      new MirrorCollection().mirror(treeNode);
     } else {
       new MirrorObject().mirror(initialTreeMirrorNode);
     }
@@ -53,8 +55,8 @@ public class BusinessModelClone {
   public <T> T convertTo(Class<T> clazz) {
     Object target = ReflectionUtils.newInstance(clazz);
 
-    TreeMirrorNode initialTreeMirrorNode = TreeMirrorNode.newOrigNode(newOrigin(object, null), newDestNode(target,
-        Optional.empty(), PreviousNode.newPreviousNode(null, null)));
+    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, null), newDestNode(target,
+        Optional.empty(), newPreviousNode(null, null)), Sets.newHashSet());
 
     new MirrorObject().mirror(initialTreeMirrorNode);
 

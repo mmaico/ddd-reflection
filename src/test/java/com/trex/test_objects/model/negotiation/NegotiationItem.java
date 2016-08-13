@@ -20,6 +20,9 @@ public class NegotiationItem {
 
   private BigDecimal price;
 
+  @EntityReference(value = BusinessProposal.class, fieldName = "businessProposal")
+  private Negotiation negotiation;
+
   public NegotiationItem () {}
   public NegotiationItem (Long id, Product product, Integer quantity, BigDecimal price) {
     this.id = id;
@@ -58,6 +61,14 @@ public class NegotiationItem {
 
   public void setPrice(BigDecimal price) {
     this.price = price;
+  }
+
+  public Negotiation getNegotiation() {
+    return negotiation;
+  }
+
+  public void setNegotiation(Negotiation negotiation) {
+    this.negotiation = negotiation;
   }
 
   @Override

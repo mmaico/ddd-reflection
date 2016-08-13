@@ -39,6 +39,8 @@ public class BusinessProposal {
   //@Enumerated(EnumType.STRING)
   private ProposalTemperature temperature;
 
+  private Information information;
+
   public BusinessProposal() {
   }
 
@@ -109,5 +111,13 @@ public class BusinessProposal {
 
   public void setTemperature(ProposalTemperature temperature) {
     this.temperature = temperature;
+  }
+
+  public Information getInformation() {
+    return information;
+  }
+
+  public void setInformation(Information information) {
+    this.information = information;
   }
 }
