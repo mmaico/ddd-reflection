@@ -281,12 +281,14 @@ e suportando referencias circulares.
 ##Copiando somente attributos informados
 
 Você pode usar a annotação @UpdateAttributes para informar quais atributos você deseja copiar.
-Isso se torna muito util quando você tem um formulario na tela onde pede somente o nome e data de nascimento do 
-usuário, portanto é somente essas informações que devem sofrer alterações no merge com o objeto do hibernate.
+Isso se torna muito util quando você tem um formulario na tela onde pede somente dados parciais de um objeto, 
+tipo: 
+    Você tem uma tela que pede todas as informacoes de um usuário como nome, telefone, data de nascimento, CPF etc.
+    Porem em outra tela você quer atualizar somente o nome do usuário, então você irá querer que só esse dado
+    seja alterado na entidade do hibernate ou objeto que faz referencia a qualquer outra fonte de dados.
 
-Essa técnica é muito usada no Ruby On Rails onde ele armazena os attributos que estavam na tela e que será 
-persistido no bando de dados. Isso evita que você tenha que fazer farios metodos direfentes para modificação
-de dados de uma entidade.
+Essa técnica é muito usada no Ruby On Rails onde ele armazena os attributos que estavam no formulário HTML 
+e altera ou persiste somente esses atributos na entidade do banco de dados.
 
 Exemplo
    ```javascript
@@ -322,4 +324,85 @@ como exemplo:
         }    
     ```
 No exemplo acima somente o atributo name e birthDate serão mergeado para o objeto do banco de dados.
+Para tornar essa ação automatica, adicionando os campos que vieram do formulario HTML, faça os seguinte:
+   
+   > Campos do formulario HTML
+    > introduction
+    > careOf
+    > seller.name
+    > seller.id    
+    > itemsNegotiated[0].id
+    > itemsNegotiated[0].quantity
+    > itemsNegotiated[0].price
+    > itemsNegotiated[0].product
+    > itemsNegotiated[0].product.id
+  
+    ```javascript
     
+            public class AbstractEntity {                
+                
+                @UpdateAttributes 
+                private Set<String> updateAttributes;
+                
+                //getters and setters
+            }
+    
+          @EntityReference(BusinessProposal.class)
+          public class Negotiation  extends AbstractEntity {
+        
+            private Long id;
+            private String introduction;
+            private String careOf;            
+        
+            @EntityReference(User.class, fieldName="user")
+            private Seller seller;
+        
+            @EntityReference(ProposalSaleableItem.class, fieldName="items")
+            private List<SaleableNegociated> itemsNegotiated;
+        
+            private Status status;
+        
+            //getters and setters
+          }
+          
+          @EntityReference(ProposalSaleableItem.class)
+          public class SaleableNegociated extends AbstractEntity {
+            private Long id;
+            private BigDecimal price;
+              
+            @EntityReference(Product.class, fieldName="product")
+            private Saleable product;
+              
+            private Integer quantity;
+      
+            //getters and setters
+          }
+              
+          @EntityReference(Product.class)
+          public class Saleable extends AbstractEntity {
+            private Long id;
+            private String name;
+                  
+            //getters and setters
+          }
+        
+          //Exemplo usando Spring MVC
+          public  @ResponseBody String save(@ModelAttribute Negotiation negotiation, HttpServletRequest request) {
+            Set<String> attributes = request.getParameterMap().keySet()
+            new NormalizeAttributesUpdate().addAttributesToUpdate(negotiation, attributes);
+              
+            Negotiation negotiationLoaded = repository.findOne(negotiation.getId());
+              
+            // Nesse merge somente os campos de Campos do formulario HTML serao mergeados
+            BusinessModelClone.from(negotiation).merge(negotiationLoaded);
+          }    
+    ```
+Os parametros que foram postados no formulario HTML serão recuperados no HTTPServletRequest
+e os mesmos passados para o utilitário  NormalizeAttributesUpdate().addAttributesToUpdate
+que fará a magica e adicionará os dados em cada entidade. Lembrando que todas as entidades
+deverão tem uma collection anotada com @UpdateAttributes.
+
+Quando for chamado o BusinessModelClone.from(negotiation).merge(negotiationLoaded); somente 
+os atributos informados para atualizarem serão alterados.
+
+#Se a lista de UpdateAttributes não for informada todos os dados serão mergeados. 

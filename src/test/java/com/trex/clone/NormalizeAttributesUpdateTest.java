@@ -31,7 +31,7 @@ public class NormalizeAttributesUpdateTest {
         negotiation.setInformation(new AdditionalInformation());
         negotiation.setSeller(new Seller());
 
-        new NormalizeAttributesUpdate().addFieldsToUpdate(negotiation, attrToUpdate);
+        new NormalizeAttributesUpdate().addAttributesToUpdate(negotiation, attrToUpdate);
 
         assertThat(negotiation.getUpdateAttributes().contains("introduction"), Matchers.is(Boolean.TRUE));
         assertThat(negotiation.getUpdateAttributes().contains("careOf"), Matchers.is(Boolean.TRUE));
@@ -59,7 +59,7 @@ public class NormalizeAttributesUpdateTest {
         negotiation.setItems(Lists.newArrayList(item));
 
 
-        new NormalizeAttributesUpdate().addFieldsToUpdate(negotiation, attrToUpdate);
+        new NormalizeAttributesUpdate().addAttributesToUpdate(negotiation, attrToUpdate);
 
         assertThat(negotiation.getItems().get(0).getUpdateAttributes().contains("id"), Matchers.is(Boolean.TRUE));
         assertThat(negotiation.getItems().get(0).getUpdateAttributes().contains("quantity"), Matchers.is(Boolean.TRUE));

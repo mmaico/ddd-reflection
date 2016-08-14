@@ -17,7 +17,7 @@ public class NormalizeAttributesUpdate {
 
 
     @SuppressWarnings("rawtypes")
-    public void addFieldsToUpdate(Object entity, Set<String> requestAttributes) {
+    public void addAttributesToUpdate(Object entity, Set<String> requestAttributes) {
 
         for (String attr : requestAttributes) {
             try {
