@@ -313,7 +313,7 @@ Exemplo
 No seu controller você irá recuperar do HttpServletRequest os attributos que vieram do formulario
 como exemplo:
 
-    ```javascript
+   ```javascript
         //Exemplo usando Spring MVC
         public  @ResponseBody String save(@ModelAttribute User user) { 
           user.setUpdateAttributes(new HashSet("name", "birthDate");
@@ -322,30 +322,30 @@ como exemplo:
           
           BusinessModelClone.from(user).merge(userLoaded);
         }    
-    ```
+   ```
 No exemplo acima somente o atributo name e birthDate serão mergeado para o objeto do banco de dados.
 Para tornar essa ação automatica, adicionando os campos que vieram do formulario HTML, faça os seguinte:
    
-   > Campos do formulario HTML
-    > introduction
-    > careOf
-    > seller.name
-    > seller.id    
-    > itemsNegotiated[0].id
-    > itemsNegotiated[0].quantity
-    > itemsNegotiated[0].price
-    > itemsNegotiated[0].product
-    > itemsNegotiated[0].product.id
-  
-    ```javascript
+   * Campos do formulario HTML
+    * introduction
+    * careOf
+    * seller.name
+    * seller.id    
+    * itemsNegotiated[0].id
+    * itemsNegotiated[0].quantity
+    * itemsNegotiated[0].price
+    * itemsNegotiated[0].product
+    * itemsNegotiated[0].product.id
+   
+   ```javascript
     
-            public class AbstractEntity {                
+          public class AbstractEntity {                
                 
-                @UpdateAttributes 
-                private Set<String> updateAttributes;
+            @UpdateAttributes 
+            private Set<String> updateAttributes;
                 
-                //getters and setters
-            }
+            //getters and setters
+          }
     
           @EntityReference(BusinessProposal.class)
           public class Negotiation  extends AbstractEntity {
@@ -395,8 +395,8 @@ Para tornar essa ação automatica, adicionando os campos que vieram do formular
               
             // Nesse merge somente os campos de Campos do formulario HTML serao mergeados
             BusinessModelClone.from(negotiation).merge(negotiationLoaded);
-          }    
-    ```
+         }    
+   ```
 Os parametros que foram postados no formulario HTML serão recuperados no HTTPServletRequest
 e os mesmos passados para o utilitário  NormalizeAttributesUpdate().addAttributesToUpdate
 que fará a magica e adicionará os dados em cada entidade. Lembrando que todas as entidades
@@ -405,4 +405,4 @@ deverão tem uma collection anotada com @UpdateAttributes.
 Quando for chamado o BusinessModelClone.from(negotiation).merge(negotiationLoaded); somente 
 os atributos informados para atualizarem serão alterados.
 
-#Se a lista de UpdateAttributes não for informada todos os dados serão mergeados. 
+> Se a lista de UpdateAttributes não for informada todos os dados serão mergeados. 
