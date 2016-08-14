@@ -43,6 +43,7 @@ dependencies {
     compile("com.google.guava:guava:18.0")
     compile("net.vidageek:mirror:1.6.1")
     compile("commons-beanutils:commons-beanutils:1.9.2")
+    compile("org.azeckoski:reflectutils:0.9.20")
 }
 
 task javadocJar(type: Jar) {

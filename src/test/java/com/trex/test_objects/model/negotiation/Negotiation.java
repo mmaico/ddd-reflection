@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @EntityReference(BusinessProposal.class)
-public class Negotiation {
+public class Negotiation extends AbstractModel {
 
   private Long id;
 
@@ -37,8 +37,7 @@ public class Negotiation {
   @EntityReference(value = Information.class)
   private AdditionalInformation information;
 
-  @UpdateAttributes
-  private Set<String> updateAttributes;
+
 
 
   public Long getId() {
@@ -105,13 +104,6 @@ public class Negotiation {
     this.information = information;
   }
 
-  public Set<String> getUpdateAttributes() {
-    return updateAttributes;
-  }
-
-  public void setUpdateAttributes(Set<String> updateAttributes) {
-    this.updateAttributes = updateAttributes;
-  }
 
   public void changeStatusTo(NegotiationStatus newStatus) {
     if (!this.getStatus().equals(newStatus)) {

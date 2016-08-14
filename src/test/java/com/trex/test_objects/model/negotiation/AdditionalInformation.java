@@ -5,7 +5,7 @@ import com.trex.shared.annotations.EntityReference;
 import com.trex.test_objects.hibernate_entities.Information;
 
 @EntityReference(Information.class)
-public class AdditionalInformation {
+public class AdditionalInformation extends AbstractModel {
 
     private Long id;
 

@@ -9,7 +9,7 @@ import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
 import java.math.BigDecimal;
 
 @EntityReference(ProposalSaleableItem.class)
-public class NegotiationItem {
+public class NegotiationItem extends AbstractModel {
 
   private Long id;
 

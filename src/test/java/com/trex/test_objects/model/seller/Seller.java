@@ -4,12 +4,15 @@ package com.trex.test_objects.model.seller;
 
 import com.google.common.collect.Lists;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.shared.annotations.UpdateAttributes;
 import com.trex.test_objects.hibernate_entities.User;
+import com.trex.test_objects.model.negotiation.AbstractModel;
 
 import java.util.List;
+import java.util.Set;
 
 @EntityReference(User.class)
-public class Seller {
+public class Seller extends AbstractModel {
 
   private Long id;
 

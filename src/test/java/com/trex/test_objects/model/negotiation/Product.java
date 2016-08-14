@@ -5,7 +5,7 @@ import com.trex.shared.annotations.EntityReference;
 import com.trex.test_objects.hibernate_entities.ProductLegacy;
 
 @EntityReference(value = ProductLegacy.class)
-public class Product {
+public class Product extends AbstractModel {
 
   private Long id;
 

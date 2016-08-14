@@ -4,9 +4,10 @@ package com.trex.test_objects.model.customer;
 
 import com.trex.shared.annotations.EntityReference;
 import com.trex.test_objects.hibernate_entities.Person;
+import com.trex.test_objects.model.negotiation.AbstractModel;
 
 @EntityReference(Person.class)
-public class Customer {
+public class Customer  extends AbstractModel {
 
     private Long id;
 
