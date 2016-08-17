@@ -8,7 +8,7 @@ import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.MirrorList;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-
+import org.azeckoski.reflectutils.ReflectUtils;
 
 
 import java.lang.reflect.*;
@@ -191,11 +191,9 @@ public class ReflectionUtils {
 
   public static void invokeSetter(Object target, String fieldName, Object value) {
     try {
-      BeanUtils.setProperty(target, fieldName, value);
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
+      ReflectUtils.getInstance().setFieldValue(target, fieldName, value);
+    } catch (Exception e) {
+
     }
   }
 
