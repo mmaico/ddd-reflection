@@ -1,19 +1,21 @@
 package com.trex.clone.node;
 
 
-public class PreviousNode {
+public class PreviousNode implements NodeFields {
 
   private final Object root;
   private final String field;
+  private final String fieldModelName;
 
 
-  public PreviousNode(Object root, String field) {
+  public PreviousNode(Object root, String field, String fieldModelName) {
     this.root = root;
     this.field = field;
+    this.fieldModelName = fieldModelName;
   }
 
-  public static PreviousNode newPreviousNode(Object root, String field) {
-    return new PreviousNode(root, field);
+  public static PreviousNode newPreviousNode(Object root, String field, String fieldModelName) {
+    return new PreviousNode(root, field, fieldModelName);
   }
 
   public Object getObject() {
@@ -26,5 +28,10 @@ public class PreviousNode {
 
   public Boolean isNull() {
     return root == null;
+  }
+
+
+  public String getFieldModelName() {
+    return fieldModelName;
   }
 }

@@ -3,17 +3,14 @@ package com.trex.test_objects.model.negotiation;
 
 
 import com.trex.NegotiationStatusEnumConverter;
-import com.trex.shared.annotations.CustomConverter;
-import com.trex.shared.annotations.EntityReference;
-import com.trex.shared.annotations.UpdateAttributes;
+import com.trex.shared.annotations.*;
 import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.customer.Customer;
 import com.trex.test_objects.model.seller.Seller;
 
 import java.util.List;
-import java.util.Set;
 
-@EntityReference(BusinessProposal.class)
+@Model
 public class Negotiation extends AbstractModel {
 
   private Long id;
@@ -22,21 +19,19 @@ public class Negotiation extends AbstractModel {
 
   private String careOf;
 
-  @EntityReference(User.class)
+
   private Seller seller;
 
-  @EntityReference(value = Person.class, fieldName = "client")
+  @Attribute(destinationName = "client")
   private Customer customer;
 
-  @EntityReference(value = ProposalSaleableItem.class, fieldName = "saleableItems")
+  @Attribute(destinationName = "saleableItems")
   private List<NegotiationItem> items;
 
-  @CustomConverter(convert = NegotiationStatusEnumConverter.class, fieldName = "temperature")
+  @Attribute(converter = NegotiationStatusEnumConverter.class, destinationName = "temperature")
   private NegotiationStatus status;
 
-  @EntityReference(value = Information.class)
   private AdditionalInformation information;
-
 
 
 

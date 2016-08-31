@@ -4,6 +4,7 @@ package com.trex.clone;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import com.trex.clone.reflections.ReflectionCloneUtils;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.clone.exceptions.InvalidCollectionException;
 import com.trex.clone.node.DestinationNode;
@@ -12,6 +13,7 @@ import com.trex.clone.node.PreviousNode;
 import com.trex.clone.node.TreeMirrorNode;
 import com.trex.shared.libraries.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -19,6 +21,8 @@ import static com.trex.clone.node.DestinationNode.newDestNode;
 import static com.trex.clone.node.OriginNode.newOrigin;
 import static com.trex.clone.node.PreviousNode.newPreviousNode;
 import static com.trex.clone.node.TreeMirrorNode.newOrigNode;
+import static com.trex.clone.reflections.ReflectionCloneUtils.isModel;
+import static com.trex.shared.libraries.ReflectionUtils.getField;
 
 
 public class MirrorCollection {
@@ -30,9 +34,9 @@ public class MirrorCollection {
       InvalidCollectionException.throwingError(treeMirrorNode.getOrigin());
     }
 
-    if (!treeMirrorNode.getDest().isClassCollection()) {
-      InvalidCollectionException.throwingError(treeMirrorNode.getOrigin(), treeMirrorNode.getDest());
-    }
+//    if (!treeMirrorNode.getDest().isClassCollection()) {
+//      InvalidCollectionException.throwingError(treeMirrorNode.getOrigin(), treeMirrorNode.getDest());
+//    }
 
     final Collection destinationCollection;
 
@@ -49,15 +53,14 @@ public class MirrorCollection {
       final Object found;
 
       if (!optional.isPresent()) {
-        EntityReference annotation = treeMirrorNode.getOrigin().getField().getAnnotation(EntityReference.class);
-        found = ReflectionUtils.newInstance(annotation.value());
+        found = ReflectionCloneUtils.newInstance(treeMirrorNode.getPreviousNode().getObject(), treeMirrorNode.getOrigin());
         destinationCollection.add(found);
       } else {
         found = optional.get();
       }
 
-      TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(itemOrigin, null),
-            newDestNode(found, Optional.empty(), newPreviousNode(null, null)), treeMirrorNode.getNestedObjects());
+      TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(itemOrigin, null, null),
+            newDestNode(found, Optional.empty(), newPreviousNode(null, null, null)), treeMirrorNode.getNestedObjects());
 
       new MirrorObject().mirror(initialTreeMirrorNode);
     }

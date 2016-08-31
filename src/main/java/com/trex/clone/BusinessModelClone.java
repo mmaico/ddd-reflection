@@ -39,8 +39,8 @@ public class BusinessModelClone {
 
   public void merge(Object hibernateEntity) {
 
-    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, this.fieldModel), newDestNode(hibernateEntity,
-            Optional.empty(), newPreviousNode(null, null)), Sets.newHashSet());
+    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, null, null), newDestNode(hibernateEntity,
+            Optional.empty(), newPreviousNode(null, null, null)), Sets.newHashSet());
 
     if (isCollection(object) && isCollection(hibernateEntity)) {
       TreeMirrorNode treeNode = newOrigNode(initialTreeMirrorNode.getOrigin(),
@@ -55,8 +55,8 @@ public class BusinessModelClone {
   public <T> T convertTo(Class<T> clazz) {
     Object target = ReflectionUtils.newInstance(clazz);
 
-    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, null), newDestNode(target,
-        Optional.empty(), newPreviousNode(null, null)), Sets.newHashSet());
+    TreeMirrorNode initialTreeMirrorNode = newOrigNode(newOrigin(object, null, null), newDestNode(target,
+        Optional.empty(), newPreviousNode(null, null, null)), Sets.newHashSet());
 
     new MirrorObject().mirror(initialTreeMirrorNode);
 

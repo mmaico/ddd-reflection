@@ -1,5 +1,7 @@
 package com.trex.test_objects.hibernate_entities;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -113,12 +115,8 @@ public class User {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("User{");
-    sb.append("id=").append(getId());
-    sb.append(", login='").append(login).append('\'');
-    sb.append(", password='").append(password).append('\'');
-    sb.append('}');
-    return sb.toString();
+
+    return ToStringBuilder.reflectionToString(this);
   }
 
   @Override

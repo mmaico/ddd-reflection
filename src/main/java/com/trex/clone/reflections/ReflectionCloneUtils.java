@@ -3,13 +3,15 @@ package com.trex.clone.reflections;
 
 
 import com.google.common.collect.Lists;
-import com.trex.shared.annotations.CustomConverter;
-import com.trex.shared.annotations.EntityReference;
+import com.trex.clone.node.NodeFields;
+import com.trex.shared.annotations.*;
 import com.trex.clone.node.ChildNode;
-import com.trex.shared.annotations.UpdateAttributes;
 import com.trex.shared.converters.AttributeEntityConverter;
 import com.trex.shared.libraries.ReflectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.trex.shared.libraries.registers.PrimitiveTypeFields;
+import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.MirrorList;
+import org.azeckoski.reflectutils.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.trex.shared.libraries.ReflectionUtils.getField;
+import static com.trex.shared.libraries.ReflectionUtils.hasAnnotation;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class ReflectionCloneUtils {
@@ -45,79 +49,133 @@ public class ReflectionCloneUtils {
   }
 
   public static void mergeAttrWithCustomConverter(Object origin, Object destination) {
-    List<ChildNode> result = ReflectionUtils.getValues(origin, Lists.newArrayList(CustomConverter.class));
+    List<Field> result = null;
 
-    for (ChildNode node: result) {
-      CustomConverter annotation = node.getField().getAnnotation(CustomConverter.class);
-      Class<? extends AttributeEntityConverter> convertClass = annotation.convert();
+    if (isModel(origin)) {
+      result = getChildWithCustomConverter(origin);
+    } else {
+      result = getChildWithCustomConverter(destination);
+    }
+
+    for (Field field: result) {
+      Attribute annotation = field.getAnnotation(Attribute.class);
+      Class<? extends AttributeEntityConverter> convertClass = annotation.converter();
       AttributeEntityConverter attributeEntityConverter =
           (AttributeEntityConverter) ReflectionUtils.newInstance(convertClass);
 
-      Object valueConverted = attributeEntityConverter.convertToEntityAttribute(node.getObject());
-
-      if (StringUtils.isBlank(annotation.fieldName())) {
-        ReflectionUtils.invokeSetter(destination, node.getField().getName(), valueConverted);
+      if (isModel(origin)) {
+        Object valueConverted = attributeEntityConverter.convertToEntityAttribute(origin);
+        if (isBlank(annotation.destinationName())) {
+          ReflectionUtils.invokeSetter(destination, field.getName(), valueConverted);
+        } else {
+          ReflectionUtils.invokeSetter(destination, annotation.destinationName(), valueConverted);
+        }
       } else {
-        ReflectionUtils.invokeSetter(destination, annotation.fieldName(), valueConverted);
+        Object valueConverted = attributeEntityConverter.convertToBusinessModel(origin);
+        ReflectionUtils.invokeSetter(destination, field.getName(), valueConverted);
       }
+
     }
   }
 
-  public static List<ChildNode> getReferenceFields(Object base) {
+  public static List<Field> getChildWithCustomConverter(Object origin) {
+    return new Mirror().on(origin.getClass()).reflectAll()
+            .fields().matching(field -> {
+                Attribute annotation = field.getAnnotation(Attribute.class);
+                if (annotation != null && !annotation.converter().isInterface()) {
+                  return Boolean.TRUE;
+                } else {
+                  return Boolean.FALSE;
+                }
+            });
+  }
+
+  //Refactory this method.
+  public static List<ChildNode> getChildren(Object base) {
     Collection<String> fieldsToUpdate = getAttributesToUpdateDeclared(base);
 
-    List<ChildNode> childNodes = ReflectionUtils.getValues(base, Lists.newArrayList(EntityReference.class));
+    List<Field> fieldsFound = new Mirror().on(base.getClass())
+            .reflectAll().fields()
+            .matching(field -> !PrimitiveTypeFields.getInstance().contains(field.getType())
+                    && field.getAnnotation(UpdateAttributes.class) == null);
 
     if (fieldsToUpdate.isEmpty()) {
-      return childNodes;
+        return fieldsFound.stream().map(field -> getChildNode(field))
+              .collect(Collectors.toList());
     } else {
-      return childNodes.stream().filter(node -> fieldsToUpdate.contains(node.getField().getName()))
+        return fieldsFound.stream().filter(field -> fieldsToUpdate.contains(field.getName()))
+                .map(field -> getChildNode(field))
               .collect(Collectors.toList());
     }
 
   }
 
-  public static Object newInstanceByReference(Object origin) {
-
-    if (origin == null) return null;
-
-    Optional<EntityReference> annotation = Optional.ofNullable(origin.getClass().getAnnotation(EntityReference.class));
-
-    if (annotation.isPresent()) {
-      return ReflectionUtils.newInstance(annotation.get().value());
-    }
-
-    return null;
-  }
-
-  public static Object invokeGetter(Object object, Field field) {
-    EntityReference annotation = field.getAnnotation(EntityReference.class);
-    if (isBlank(annotation.fieldName())) {
-      return ReflectionUtils.invokeSafeGetter(object, field.getName());
+  private static ChildNode getChildNode(Field field) {
+    Attribute annotation = field.getAnnotation(Attribute.class);
+    if (annotation != null && annotation.converter().isInterface()) {
+      return isBlank(annotation.destinationName())
+              ? new ChildNode(field.getName(), field.getName())
+              : new ChildNode(annotation.destinationName(), field.getName());
     } else {
-      return ReflectionUtils.invokeSafeGetter(object, annotation.fieldName());
+      return new ChildNode(field.getName(), field.getName());
     }
   }
 
-  public static Optional<Field> getDestField(Object objectDest, Field fieldOrigin) {
-    EntityReference annotation = fieldOrigin.getAnnotation(EntityReference.class);
-    if (objectDest == null) {
-      return Optional.empty();
-    }
+  public static Object getModel(Object origin, Object destination) {
 
-    if (isBlank(annotation.fieldName())) {
-      return ReflectionUtils.getField(objectDest, fieldOrigin.getName());
+    if (hasAnnotation(origin.getClass(), Model.class)) {
+        return origin;
     } else {
-      return ReflectionUtils.getField(objectDest, annotation.fieldName());
+      return destination;
     }
   }
 
-  public static String getPropertyName(Field field) {
-    EntityReference annotation = field.getAnnotation(EntityReference.class);
-    if (isBlank(annotation.fieldName())) {
-      return field.getName();
+  public static Boolean isModel(Object object) {
+    return hasAnnotation(object.getClass(), Model.class);
+  }
+
+  public static Object newInstance(Object object, NodeFields nodeFields) {
+    Optional<Field> fieldFound = null;
+    if (isModel(object)) {
+      fieldFound = getField(object, nodeFields.getFieldModelName());
     } else {
-      return annotation.fieldName();
+      fieldFound = getField(object, nodeFields.getField());
+    }
+
+    Optional<Class> genericClassCollection = ReflectionUtils.getGenericClassCollection(fieldFound.get());
+    return ReflectionUtils.newInstance(genericClassCollection.get());
+  }
+
+
+  public static Object invokeGetter(Object object, NodeFields nodeFields) {
+    try {
+      if (isModel(object)) {
+        return ReflectionUtils.invokeGetter(object, nodeFields.getFieldModelName());
+      } else {
+        return ReflectionUtils.invokeGetter(object, nodeFields.getField());
+      }
+    } catch (Exception e) {
+      return null;
     }
   }
+
+  public static void invokeSetter(Object target, NodeFields nodeFields, Object value) {
+    try {
+      if (isModel(target)) {
+        ReflectUtils.getInstance().setFieldValue(target, nodeFields.getFieldModelName(), value);
+      } else {
+        ReflectUtils.getInstance().setFieldValue(target, nodeFields.getField(), value);
+      }
+    } catch (Exception e) {}
+  }
+
+  public static Object invokeGetter(Object object, String field) {
+    try {
+      return ReflectionUtils.invokeGetter(object, field);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+
 }

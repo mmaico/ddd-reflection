@@ -1,55 +1,53 @@
 package com.trex.clone.node;
 
 
-
-
-import com.trex.clone.reflections.ReflectionCloneUtils;
-import com.trex.shared.libraries.CollectionUtils;
+import com.trex.shared.libraries.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.trex.clone.reflections.ReflectionCloneUtils.getPropertyName;
+import static com.trex.clone.reflections.ReflectionCloneUtils.isModel;
 import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 
-public class OriginNode {
+public class OriginNode implements NodeFields {
 
-    private final Field field;
+    private final String field;
+    private final String fieldModelName;
     private final Object origin;
 
-    public OriginNode(Field field, Object origin) {
+    public OriginNode(String field, Object origin, String fieldModelName) {
         this.field = field;
         this.origin = origin;
+        this.fieldModelName = fieldModelName;
     }
 
-    public String getAttributeNameToDestination() {
+    public Optional<Object> generateNewInstanceDestination(Object previousObject) {
+        String fieldToFind = isModel(previousObject) ? this.fieldModelName : field;
 
-        return getPropertyName(field);
-    }
-
-    public Optional<Object> generateNewInstanceDestination() {
-        return Optional.ofNullable(ReflectionCloneUtils.newInstanceByReference(origin));
+        Optional<Field> fieldFound = ReflectionUtils.getField(previousObject, fieldToFind);
+        if (!fieldFound.isPresent()) return Optional.empty();
+        return Optional.ofNullable(ReflectionUtils.newInstance(fieldFound.get().getType()));
     }
 
     public boolean isClassCollection() {
-
-
-        return isCollection(origin) ||  field != null  && isCollection(field.getType());
+        return isCollection(origin);
     }
 
     public Object getObject() {
         return origin;
     }
 
-    public Field getField() {
+    public String getField() {
         return field;
     }
 
-    public static OriginNode newOrigin(Object object, Field field) {
-        return new OriginNode(field, object);
+    public String getFieldModelName() {
+        return fieldModelName;
+    }
+
+    public static OriginNode newOrigin(Object object, String field, String fieldModelName) {
+        return new OriginNode(field, object, fieldModelName);
     }
 
     public boolean isNull() {

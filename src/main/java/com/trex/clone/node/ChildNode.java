@@ -1,27 +1,27 @@
 package com.trex.clone.node;
 
 
-import java.lang.reflect.Field;
+public class ChildNode implements NodeFields {
 
-public class ChildNode {
+  private final String field;
+  private final String fieldModelName;
 
-  private final Field field;
-  private final Object object;
-
-  public ChildNode(Object object, Field field) {
+  public ChildNode(String field, String fieldModelName) {
     this.field = field;
-    this.object = object;
+    this.fieldModelName = fieldModelName;
+
   }
 
-  public static ChildNode createDescriptor(Object object, Field field) {
-      return new ChildNode(object, field);
+  public static ChildNode createDescriptor(String field, String fieldModelName) {
+      return new ChildNode(field, fieldModelName);
   }
 
-  public Field getField() {
+  public String getField() {
     return field;
   }
 
-  public Object getObject() {
-    return object;
+  public String getFieldModelName() {
+    return fieldModelName;
   }
+
 }

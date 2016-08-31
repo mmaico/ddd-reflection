@@ -1,19 +1,21 @@
 package com.trex.test_objects.model.passenger;
 
+import com.trex.shared.annotations.Attribute;
+import com.trex.shared.annotations.Model;
 import com.trex.test_objects.hibernate_entities.BusinessProposal;
 import com.trex.test_objects.hibernate_entities.User;
 import com.trex.shared.annotations.EntityReference;
 
 import java.util.Date;
 
-@EntityReference(BusinessProposal.class)
+@Model
 public class Aircraft {
 
   private Long id;
 
   private Date start;
 
-  @EntityReference(value = User.class, fieldName = "seller")
+  @Attribute(destinationName = "seller")
   private Passenger passenger;
 
   public Long getId() {

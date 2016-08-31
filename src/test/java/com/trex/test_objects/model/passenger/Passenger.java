@@ -3,11 +3,12 @@ package com.trex.test_objects.model.passenger;
 
 
 import com.trex.DocumentExtractor;
+import com.trex.shared.annotations.Model;
 import com.trex.test_objects.hibernate_entities.User;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
 
-@EntityReference(User.class)
+@Model
 public class Passenger {
 
   private Long id;

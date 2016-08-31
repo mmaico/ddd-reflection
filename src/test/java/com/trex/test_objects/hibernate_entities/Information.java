@@ -1,6 +1,5 @@
 package com.trex.test_objects.hibernate_entities;
 
-
 public class Information {
 
     private Long id;

@@ -2,6 +2,7 @@ package com.trex.shared.libraries;
 
 
 import com.trex.clone.node.ChildNode;
+import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.libraries.concurrent.ConcurrentReferenceHashMap;
 import com.trex.shared.libraries.registers.PrimitiveTypeFields;
 import net.vidageek.mirror.dsl.Mirror;
@@ -101,16 +102,18 @@ public class ReflectionUtils {
 
   }
 
-  public static List<ChildNode> getValues(Object base, List<Class> withAnnotations) {
+//  public static List<ChildNode> getValues(Object base, List<Class> withAnnotations) {
+//
+//    return new Mirror().on(base.getClass())
+//        .reflectAll().fields()
+//        .matching(field ->
+//            withAnnotations.stream()
+//                .filter(ann -> field.getAnnotation(ann) != null).count() > 0)
+//        .stream().map(field -> createDescriptor(invokeGetter(base, field), field))
+//        .collect(Collectors.toList());
+//  }
 
-    return new Mirror().on(base.getClass())
-        .reflectAll().fields()
-        .matching(field ->
-            withAnnotations.stream()
-                .filter(ann -> field.getAnnotation(ann) != null).count() > 0)
-        .stream().map(field -> createDescriptor(invokeGetter(base, field), field))
-        .collect(Collectors.toList());
-  }
+
 
   public static Object invokeGetter(Object target, Field field) {
     return invokeGetter(target, field.getName());

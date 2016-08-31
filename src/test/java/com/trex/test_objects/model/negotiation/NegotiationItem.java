@@ -1,26 +1,27 @@
 package com.trex.test_objects.model.negotiation;
 
 
+import com.trex.shared.annotations.Attribute;
 import com.trex.shared.annotations.EntityReference;
+import com.trex.shared.annotations.Model;
 import com.trex.test_objects.hibernate_entities.BusinessProposal;
 import com.trex.test_objects.hibernate_entities.ProductLegacy;
 import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
 
 import java.math.BigDecimal;
 
-@EntityReference(ProposalSaleableItem.class)
+@Model
 public class NegotiationItem extends AbstractModel {
 
   private Long id;
 
-  @EntityReference(value = ProductLegacy.class)
   private Product product;
 
   private Integer quantity;
 
   private BigDecimal price;
 
-  @EntityReference(value = BusinessProposal.class, fieldName = "businessProposal")
+  @Attribute(destinationName = "businessProposal")
   private Negotiation negotiation;
 
   public NegotiationItem () {}

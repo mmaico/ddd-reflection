@@ -2,10 +2,10 @@
 package com.trex.shared.converters;
 
 
-public interface AttributeEntityConverter<X,Y> {
+public interface AttributeEntityConverter<MODEL, ENTITY> {
 
-	Y convertToEntityAttribute(X attribute);
+	Object convertToEntityAttribute(MODEL entity);
 
-	X convertToBusinessModel(Y dbData);
+	Object convertToBusinessModel(ENTITY dbData);
 
 }

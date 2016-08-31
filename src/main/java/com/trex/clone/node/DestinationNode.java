@@ -8,16 +8,17 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Optional;
 
+import static com.trex.clone.reflections.ReflectionCloneUtils.isModel;
 import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 public class DestinationNode {
 
     private final Object target;
-    private final Optional<Field> field;
+    private final Optional<String> field;
     private final PreviousNode previousNode;
 
 
-    public DestinationNode(Object object, Optional<Field> field, PreviousNode previousNode) {
+    public DestinationNode(Object object, Optional<String> field, PreviousNode previousNode) {
         this.target = object;
         this.field = field;
         this.previousNode = previousNode;
@@ -27,7 +28,7 @@ public class DestinationNode {
         return target;
     }
 
-    public static DestinationNode newDestNode(Object objectDest, Optional<Field> field, PreviousNode previousNode) {
+    public static DestinationNode newDestNode(Object objectDest, Optional<String> field, PreviousNode previousNode) {
         return new DestinationNode(objectDest, field, previousNode);
     }
 
@@ -36,10 +37,10 @@ public class DestinationNode {
     }
 
     public boolean isClassCollection() {
-        return isCollection(target) ||  field.isPresent() && isCollection(field.get().getType());
+        return isCollection(target);
     }
 
-    public Optional<Field> getField() {
+    public Optional<String> getField() {
         return field;
     }
 
@@ -52,8 +53,14 @@ public class DestinationNode {
     }
 
     public Collection generateNewCollection() {
+        Optional<Field> field = null;
 
-        Optional<Field> field = ReflectionUtils.getField(this.previousNode.getObject(), previousNode.getField());
+        if (isModel(this.previousNode.getObject())) {
+            field = ReflectionUtils.getField(this.previousNode.getObject(), previousNode.getFieldModelName());
+        } else {
+            field = ReflectionUtils.getField(this.previousNode.getObject(), previousNode.getField());
+        }
+
         if (!field.isPresent()) {
             throw new RuntimeException("Field not found on: [ " + this.previousNode.getObject() + " ] field [ " + previousNode.getField() + " ]");
         }
@@ -66,7 +73,12 @@ public class DestinationNode {
 
         Collection collection = (Collection) ReflectionUtils.newInstance(collectionImpl);
 
-        ReflectionUtils.invokeSetter(this.previousNode.getObject(), this.previousNode.getField(), collection);
+        if (isModel(this.previousNode.getObject())) {
+            ReflectionUtils.invokeSetter(this.previousNode.getObject(), this.previousNode.getFieldModelName(), collection);
+        } else {
+            ReflectionUtils.invokeSetter(this.previousNode.getObject(), this.previousNode.getField(), collection);
+        }
+
         return collection;
     }
 

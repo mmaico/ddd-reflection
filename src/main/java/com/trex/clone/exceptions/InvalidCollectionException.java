@@ -16,12 +16,12 @@ public class InvalidCollectionException extends RuntimeException {
 
   public InvalidCollectionException(OriginNode originNode) {
     super("Could not find a collection in origin ["
-        + originNode.getField().getName() + "] on target [" + originNode.getField().getType() + "]");
+        + originNode.getField() + "] on target [" + originNode.getField() + "]");
   }
 
   public InvalidCollectionException(OriginNode originNode, DestinationNode destinationNode) {
     super("Could not find a collection on destination [ " + destinationNode.getPreviousNode().getObject() + " ]"
-        + " calling destination method [ "  + originNode.getAttributeNameToDestination() + " ]");
+        + " calling destination method [ "  + originNode.getField() + " ]");
   }
 
   public static void throwingError(OriginNode node) {

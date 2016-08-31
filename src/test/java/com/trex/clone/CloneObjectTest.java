@@ -3,9 +3,7 @@ package com.trex.clone;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.trex.test_objects.hibernate_entities.BusinessProposal;
-import com.trex.test_objects.hibernate_entities.ProposalSaleableItem;
-import com.trex.test_objects.hibernate_entities.ProposalTemperature;
+import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.customer.Customer;
 import com.trex.test_objects.model.negotiation.AdditionalInformation;
 import com.trex.test_objects.model.negotiation.Negotiation;
@@ -32,9 +30,11 @@ public class CloneObjectTest {
     negotiation.setStatus(NegotiationStatus.CLOSED_WON);
 
     Customer customer = new Customer();
+    customer.setName("Name of customer");
     customer.setId(2l);
 
     Seller seller = new Seller();
+    seller.setName("Jose Luiz");
     seller.setId(3l);
 
     negotiation.setCustomer(customer);
@@ -49,8 +49,59 @@ public class CloneObjectTest {
     BusinessProposal businessProposal = BusinessModelClone.from(negotiation).convertTo(BusinessProposal.class);
 
     assertThat(businessProposal.getId(), is(1l));
-    assertThat(businessProposal.getClient().getId(), is(2l));
     assertThat(businessProposal.getSeller().getId(), is(3l));
+    assertThat(businessProposal.getSeller().getName(), is("Jose Luiz"));
+    assertThat(businessProposal.getClient().getId(), is(2l));
+    assertThat(businessProposal.getClient().getName(), is("Name of customer"));
+
+    assertThat(businessProposal.getSaleableItems().size(), is(1));
+    assertThat(businessProposal.getSaleableItems().get(0).getId(), is(10l));
+    assertThat(businessProposal.getSaleableItems().get(0).getPrice(), is(BigDecimal.TEN));
+
+
+  }
+
+  @Test
+  public void shouldCloneObjectInverted() {
+
+    BusinessProposal proposal = new BusinessProposal();
+    proposal.setId(1l);
+    proposal.setCareOf("EU");
+    proposal.setIntroduction("Introduction");
+    proposal.setTemperature(ProposalTemperature.WON);
+
+    Person client = new Person();
+    client.setId(4l);
+    client.setName("name of person");
+
+    User seller = new User();
+    seller.setName("Jose Luiz");
+    seller.setId(3l);
+
+    proposal.setClient(client);
+    proposal.setSeller(seller);
+
+    ProposalSaleableItem itemOne = new ProposalSaleableItem();
+    itemOne.setId(10l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    proposal.setSaleableItems(Lists.newArrayList(itemOne));
+
+    Negotiation negotiation = BusinessModelClone.from(proposal).convertTo(Negotiation.class);
+
+    assertThat(negotiation.getCareOf(), is("EU"));
+    assertThat(negotiation.getIntroduction(), is("Introduction"));
+    assertThat(negotiation.getId(), is(1l));
+    assertThat(negotiation.getSeller().getId(), is(3l));
+    assertThat(negotiation.getSeller().getName(), is("Jose Luiz"));
+    assertThat(negotiation.getCustomer().getId(), is(4l));
+    assertThat(negotiation.getCustomer().getName(), is("name of person"));
+
+    assertThat(negotiation.getStatus(), is(NegotiationStatus.CLOSED_WON));
+    assertThat(negotiation.getItems().size(), is(1));
+    assertThat(negotiation.getItems().get(0).getId(), is(10l));
+    assertThat(negotiation.getItems().get(0).getPrice(), is(BigDecimal.TEN));
+
   }
 
   @Test
@@ -113,6 +164,40 @@ public class CloneObjectTest {
     assertThat(businessProposal.getId(), is(1l));
     assertThat(businessProposal.getClient().getId(), is(2l));
     assertThat(businessProposal.getSeller().getId(), is(3l));
+  }
+
+  @Test
+  public void shouldConvertInverse() {
+    BusinessProposal proposal = new BusinessProposal();
+    proposal.setId(1l);
+    proposal.setCareOf("EU");
+    proposal.setIntroduction("Introduction");
+    proposal.setTemperature(ProposalTemperature.LOST);
+
+    Person customer = new Person();
+    customer.setId(2l);
+
+    User seller = new User();
+    seller.setId(3l);
+
+    proposal.setClient(customer);
+    proposal.setSeller(seller);
+
+    ProposalSaleableItem itemOne = new ProposalSaleableItem();
+    itemOne.setId(10l);
+    itemOne.setPrice(BigDecimal.TEN);
+
+    proposal.setSaleableItems(Lists.newArrayList(itemOne));
+
+
+    Negotiation negotiation = BusinessModelClone.from(proposal).convertTo(Negotiation.class);
+
+    assertThat(negotiation.getId(), is(1l));
+    assertThat(negotiation.getCustomer().getId(), is(2l));
+    assertThat(negotiation.getSeller().getId(), is(3l));
+    assertThat(negotiation.getCareOf(), is("EU"));
+    assertThat(negotiation.getIntroduction(), is("Introduction"));
+    assertThat(negotiation.getStatus(), is(NegotiationStatus.CLOSED_LOST));
   }
 
   @Test

@@ -1,24 +1,18 @@
 package com.trex.test_objects.model.seller;
 
 
-
-import com.google.common.collect.Lists;
-import com.trex.shared.annotations.EntityReference;
-import com.trex.shared.annotations.UpdateAttributes;
-import com.trex.test_objects.hibernate_entities.User;
+import com.trex.shared.annotations.Model;
 import com.trex.test_objects.model.negotiation.AbstractModel;
 
-import java.util.List;
-import java.util.Set;
 
-@EntityReference(User.class)
+@Model
 public class Seller extends AbstractModel {
 
   private Long id;
 
   private String name;
 
-  private List<Role> roles = Lists.newArrayList();
+  //private List<Role> roles = Lists.newArrayList();
 
 
   public Long getId() {
@@ -29,13 +23,13 @@ public class Seller extends AbstractModel {
     this.id = id;
   }
 
-  public List<Role> getRoles() {
-    return roles;
-  }
+//  public List<Role> getRoles() {
+//    return roles;
+//  }
 
-  public Boolean hasRole(RoleType type) {
-    return roles.stream().filter(role -> role.getTypes().contains(type)).count() > 0;
-  }
+//  public Boolean hasRole(RoleType type) {
+//    return roles.stream().filter(role -> role.getTypes().contains(type)).count() > 0;
+//  }
 
   public String getName() {
     return name;

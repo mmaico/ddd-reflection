@@ -1,10 +1,9 @@
 package com.trex.test_objects.model.negotiation;
 
 
-import com.trex.shared.annotations.EntityReference;
-import com.trex.test_objects.hibernate_entities.ProductLegacy;
+import com.trex.shared.annotations.Model;
 
-@EntityReference(value = ProductLegacy.class)
+@Model
 public class Product extends AbstractModel {
 
   private Long id;

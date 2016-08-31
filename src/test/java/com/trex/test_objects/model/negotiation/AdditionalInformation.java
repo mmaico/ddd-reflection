@@ -1,15 +1,15 @@
 package com.trex.test_objects.model.negotiation;
 
 
-import com.trex.shared.annotations.EntityReference;
-import com.trex.test_objects.hibernate_entities.Information;
+import com.trex.shared.annotations.Attribute;
+import com.trex.shared.annotations.Model;
 
-@EntityReference(Information.class)
+@Model
 public class AdditionalInformation extends AbstractModel {
 
     private Long id;
 
-    @EntityReference(value = Negotiation.class, fieldName = "businessProposal")
+    @Attribute(destinationName = "businessProposal")
     private Negotiation negotiation;
 
     private String description;
