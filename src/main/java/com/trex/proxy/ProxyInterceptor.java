@@ -23,6 +23,7 @@ public class ProxyInterceptor implements MethodInterceptor {
   }
 
   private final Object hibernateEntity;
+  private Object objectModel;
 
   public ProxyInterceptor(Object target) {
     this.hibernateEntity = target;
@@ -30,7 +31,7 @@ public class ProxyInterceptor implements MethodInterceptor {
 
   @Override
   public Object intercept(Object objectModel, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
-
+    this.objectModel = objectModel;
     HandlerInfoBuilder builder = HandlerInfoBuilder.create(objectModel, method, params, hibernateEntity);
 
     if (!builder.isGetOrSetOperation() || hibernateEntity == null) {
@@ -40,7 +41,19 @@ public class ProxyInterceptor implements MethodInterceptor {
     return handlers.get(builder.getOperation()).handler(builder);
   }
 
+  public Object getHibernateEntity() {
+    return hibernateEntity;
+  }
+
+  public Object getObjectModel() {
+    return objectModel;
+  }
+
   public static ProxyInterceptor create(Object object) {
     return new ProxyInterceptor(object);
+  }
+
+  public String toString() {
+    return "teste";
   }
 }

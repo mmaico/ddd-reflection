@@ -1,12 +1,14 @@
 package com.trex.proxy.handlers;
 
 
+import com.trex.clone.reflections.ReflectionCloneUtils;
 import com.trex.proxy.ProxyCollectionHandler;
 import com.trex.proxy.ProxyInterceptor;
 import com.trex.proxy.reflections.ReflectionProxyUtils;
-import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
+import com.trex.shared.annotations.Model;
 import com.trex.shared.libraries.ReflectionUtils;
+import com.trex.shared.libraries.registers.PrimitiveTypeFields;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Field;
@@ -36,7 +38,12 @@ public class GetHandler implements Handler {
         }
 
         Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(infoBuilder.getObjectModel(), methodName);
-        boolean isDDDModel = fieldObjectModel.getAnnotation(EntityReference.class) != null;
+        Model annotation = null;
+        if (!PrimitiveTypeFields.getInstance().contains(hibernateEntityFieldFound.get().getType())) {
+            annotation = infoBuilder.getObjectModel().getClass().getSuperclass().getAnnotation(Model.class);
+        }
+
+        boolean isDDDModel = annotation != null;
 
         if (isDDDModel) {
             Object result = ReflectionUtils.getValue(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get());
