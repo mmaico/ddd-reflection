@@ -53,7 +53,4 @@ public class ProxyInterceptor implements MethodInterceptor {
     return new ProxyInterceptor(object);
   }
 
-  public String toString() {
-    return "teste";
-  }
 }

@@ -3,6 +3,7 @@ package com.trex.proxy.reflections;
 
 
 import com.trex.proxy.extractors.AttributeExtractor;
+import com.trex.shared.annotations.Attribute;
 import com.trex.shared.annotations.CustomConverter;
 import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
@@ -51,6 +52,13 @@ public class ReflectionProxyUtils {
     Class<? extends AttributeExtractor> extractorClass = extractorAnn.value();
     AttributeExtractor extractorInstance = (AttributeExtractor) ReflectionUtils.newInstance(extractorClass);
     return extractorInstance.getAttributeValueEntity(hibernateEntity);
+  }
+
+  public static Object invokeExtractor(Field field, Object hibernateEntity) {
+    Attribute extractorAnn = field.getAnnotation(Attribute.class);
+    Class<? extends AttributeEntityConverter> extractorClass = extractorAnn.converter();
+    AttributeEntityConverter extractorInstance = (AttributeEntityConverter) ReflectionUtils.newInstance(extractorClass);
+    return extractorInstance.convertToBusinessModel(hibernateEntity);
   }
 
   public static Object invokeExtractorReverse(Method method, Object hibernateEntity) {

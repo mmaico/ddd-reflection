@@ -102,16 +102,13 @@ public class ReflectionUtils {
 
   }
 
-//  public static List<ChildNode> getValues(Object base, List<Class> withAnnotations) {
-//
-//    return new Mirror().on(base.getClass())
-//        .reflectAll().fields()
-//        .matching(field ->
-//            withAnnotations.stream()
-//                .filter(ann -> field.getAnnotation(ann) != null).count() > 0)
-//        .stream().map(field -> createDescriptor(invokeGetter(base, field), field))
-//        .collect(Collectors.toList());
-//  }
+  public static Optional<Field> getFieldByGetOrSet(Object objectModel, String originMethodName) {
+    String fieldName = StringUtils.uncapitalize(originMethodName.replaceAll("(get|set)", ""));
+
+    Optional<Field> field = ReflectionUtils.getField(objectModel, fieldName);
+
+    return field;
+  }
 
 
 

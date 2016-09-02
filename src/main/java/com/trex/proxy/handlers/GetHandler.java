@@ -1,11 +1,10 @@
 package com.trex.proxy.handlers;
 
 
-import com.trex.clone.reflections.ReflectionCloneUtils;
 import com.trex.proxy.ProxyCollectionHandler;
 import com.trex.proxy.ProxyInterceptor;
 import com.trex.proxy.reflections.ReflectionProxyUtils;
-import com.trex.shared.annotations.Extractor;
+import com.trex.shared.annotations.Attribute;
 import com.trex.shared.annotations.Model;
 import com.trex.shared.libraries.ReflectionUtils;
 import com.trex.shared.libraries.registers.PrimitiveTypeFields;
@@ -24,8 +23,11 @@ public class GetHandler implements Handler {
     @Override
     public Object handler(HandlerInfoBuilder infoBuilder) {
 
-        if (infoBuilder.getMethod().getAnnotation(Extractor.class) != null) {
-            return ReflectionProxyUtils.invokeExtractor(infoBuilder.getMethod(), infoBuilder.getHibernateEntity());
+        Optional<Field> field = ReflectionUtils.getFieldByGetOrSet(infoBuilder.getObjectModel(), infoBuilder.getMethod().getName());
+
+        if (field.isPresent() && field.get().getAnnotation(Attribute.class) != null
+                && !field.get().getAnnotation(Attribute.class).converter().isInterface()) {
+            return ReflectionProxyUtils.invokeExtractor(field.get(), infoBuilder.getHibernateEntity());
         }
 
         String methodName = infoBuilder.getMethod().getName();
@@ -61,4 +63,5 @@ public class GetHandler implements Handler {
             }
         }
     }
+
 }
