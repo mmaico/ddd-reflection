@@ -4,7 +4,6 @@ package com.trex.proxy.reflections;
 import com.trex.proxy.extractors.AttributeExtractor;
 import com.trex.shared.annotations.Attribute;
 import com.trex.shared.annotations.CustomConverter;
-import com.trex.shared.annotations.EntityReference;
 import com.trex.shared.annotations.Extractor;
 import com.trex.shared.converters.AttributeEntityConverter;
 import com.trex.shared.libraries.ReflectionUtils;
@@ -34,13 +33,6 @@ public class ReflectionProxyUtils {
     return fieldName;
   }
 
-//  public static Field getFieldByMethodName(Object target, String methodName) {
-//    String fieldName = StringUtils.uncapitalize(methodName.replaceAll("(get|set)", ""));
-//
-//    Optional<Field> field = ReflectionUtils.getField(target, fieldName);
-//    return field.get();
-//  }
-
   public static Optional<Field> getFieldByGetOrSet(Object objectModel, String originMethodName) {
     String fieldName = StringUtils.uncapitalize(originMethodName.replaceAll("(get|set)", ""));
 
@@ -48,11 +40,6 @@ public class ReflectionProxyUtils {
 
     return field;
   }
-
-//  public static Boolean hasCustomConverter(Object objectModel, String methodName) {
-//    Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(objectModel, methodName);
-//    return fieldObjectModel.getAnnotation(CustomConverter.class) != null;
-//  }
 
   public static Object invokeConverter(Method method, Object hibernateEntity) {
     Extractor extractorAnn = method.getAnnotation(Extractor.class);
@@ -74,19 +61,6 @@ public class ReflectionProxyUtils {
     AttributeEntityConverter extractorInstance = (AttributeEntityConverter) ReflectionUtils.newInstance(extractorClass);
     return extractorInstance.convertToEntityAttribute(model);
   }
-
-//  public static Object invokeCustomConverter(Object hibernateEntity, Field entityField, Field fieldObjectModel) {
-//
-//    CustomConverter annotation = fieldObjectModel.getAnnotation(CustomConverter.class);
-//    Class<? extends AttributeEntityConverter> convertClass = annotation.convert();
-//    AttributeEntityConverter attributeEntityConverter =
-//        (AttributeEntityConverter) ReflectionUtils.newInstance(convertClass);
-//
-//    Object result = ReflectionUtils.getValue(hibernateEntity, entityField);
-//
-//    return attributeEntityConverter.convertToBusinessModel(result);
-//  }
-
 
 
 }

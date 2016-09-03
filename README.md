@@ -22,12 +22,12 @@ e suportando referencias circulares.
     <dependency>
       <groupId>com.trex</groupId>
       <artifactId>ddd-reflection</artifactId>
-      <version>1.8.0</version>
+      <version>1.8.4</version>
     </dependency>
 ```
 
 ```xml
-    compile("com.trex:ddd-reflection:1.8.0")
+    compile("com.trex:ddd-reflection:1.8.4")
 ```
 
 ##Entidades de exemplo
@@ -87,15 +87,15 @@ e suportando referencias circulares.
   Criando minhas entidades de dominio com os mapeamentos para a entidade de Banco de dados.
 
   ```javascript
-      @EntityReference(BusinessProposal.class)
+      @Model
       public class Negotiation {
     
         private Long id;
     
-        @EntityReference(User.class, fieldName="user")
+        @Attribute(destinationName = "user")
         private Seller seller;
     
-        @EntityReference(ProposalSaleableItem.class, fieldName="items")
+        @Attribute(destinationName = "items")
         private List<SaleableNegociated> itemsNegotiated;
     
         private Status status;
@@ -103,7 +103,7 @@ e suportando referencias circulares.
         //getters and setters
       }
     
-      @EntityReference(User.class)
+      @Model
       public class Seller {
         private Long id;
         private String name;
@@ -111,12 +111,12 @@ e suportando referencias circulares.
         //getters and setters
       }
     
-      @EntityReference(ProposalSaleableItem.class)
+      @Model
       public class SaleableNegociated {
             private Long id;
             private BigDecimal price;
-            
-            @EntityReference(Product.class, fieldName="product")
+                       
+            @Attribute(destinationName = "product")
             private Saleable saleable;
             
             private Integer quantity;
@@ -124,7 +124,7 @@ e suportando referencias circulares.
             //getters and setters
        }
     
-      @EntityReference(Product.class)
+      @Model
       public class Saleable {
         private Long id;
         private String name;
@@ -347,17 +347,17 @@ Para tornar essa ação automatica, adicionando os campos que vieram do formular
             //getters and setters
           }
     
-          @EntityReference(BusinessProposal.class)
+          @Model
           public class Negotiation  extends AbstractEntity {
         
             private Long id;
             private String introduction;
             private String careOf;            
-        
-            @EntityReference(User.class, fieldName="user")
+                  
+            @Attribute(destinationName = "user")
             private Seller seller;
-        
-            @EntityReference(ProposalSaleableItem.class, fieldName="items")
+                   
+            @Attribute(destinationName = "items")
             private List<SaleableNegociated> itemsNegotiated;
         
             private Status status;
@@ -365,12 +365,11 @@ Para tornar essa ação automatica, adicionando os campos que vieram do formular
             //getters and setters
           }
           
-          @EntityReference(ProposalSaleableItem.class)
+          @Model
           public class SaleableNegociated extends AbstractEntity {
             private Long id;
             private BigDecimal price;
               
-            @EntityReference(Product.class, fieldName="product")
             private Saleable product;
               
             private Integer quantity;
@@ -378,7 +377,7 @@ Para tornar essa ação automatica, adicionando os campos que vieram do formular
             //getters and setters
           }
               
-          @EntityReference(Product.class)
+          @Model
           public class Saleable extends AbstractEntity {
             private Long id;
             private String name;
