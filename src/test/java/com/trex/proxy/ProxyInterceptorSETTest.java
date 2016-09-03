@@ -9,6 +9,7 @@ import com.trex.test_objects.model.negotiation.Product;
 import com.trex.test_objects.model.passenger.Aircraft;
 import com.trex.test_objects.model.seller.Seller;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ProxyInterceptorSETTest {
 
+  @Ignore
   @Test
   public void shouldSetAttibuteByProxyUsingConvertValueFromModelToHibernateEntity() {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
