@@ -14,8 +14,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Optional;
 
-import static com.trex.proxy.reflections.ReflectionProxyUtils.hasCustomConverter;
-import static com.trex.proxy.reflections.ReflectionProxyUtils.invokeCustomConverter;
 import static com.trex.shared.libraries.CollectionUtils.isCollection;
 
 public class GetHandler implements Handler {
@@ -23,11 +21,11 @@ public class GetHandler implements Handler {
     @Override
     public Object handler(HandlerInfoBuilder infoBuilder) {
 
-        Optional<Field> field = ReflectionUtils.getFieldByGetOrSet(infoBuilder.getObjectModel(), infoBuilder.getMethod().getName());
+        Optional<Field> fieldObjectModel = ReflectionProxyUtils.getFieldByGetOrSet(infoBuilder.getObjectModel(), infoBuilder.getMethod().getName());
 
-        if (field.isPresent() && field.get().getAnnotation(Attribute.class) != null
-                && !field.get().getAnnotation(Attribute.class).converter().isInterface()) {
-            return ReflectionProxyUtils.invokeExtractor(field.get(), infoBuilder.getHibernateEntity());
+        if (fieldObjectModel.isPresent() && fieldObjectModel.get().getAnnotation(Attribute.class) != null
+                && !fieldObjectModel.get().getAnnotation(Attribute.class).converter().isInterface()) {
+            return ReflectionProxyUtils.invokeConverter(fieldObjectModel.get(), infoBuilder.getHibernateEntity());
         }
 
         String methodName = infoBuilder.getMethod().getName();
@@ -39,7 +37,6 @@ public class GetHandler implements Handler {
                     + "not found on [ " + infoBuilder.getHibernateEntity().getClass() + "]");
         }
 
-        Field fieldObjectModel = ReflectionProxyUtils.getFieldByMethodName(infoBuilder.getObjectModel(), methodName);
         Model annotation = null;
         if (!PrimitiveTypeFields.getInstance().contains(hibernateEntityFieldFound.get().getType())) {
             annotation = infoBuilder.getObjectModel().getClass().getSuperclass().getAnnotation(Model.class);
@@ -51,16 +48,12 @@ public class GetHandler implements Handler {
             Object result = ReflectionUtils.getValue(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get());
             if (isCollection(hibernateEntityFieldFound.get().getType())) {
                 return ProxyCollectionHandler
-                        .createProxyCollection((Collection) result, fieldObjectModel).proxy();
+                        .createProxyCollection((Collection) result, fieldObjectModel.get()).proxy();
             } else {
                 return Enhancer.create(infoBuilder.getMethod().getReturnType(), ProxyInterceptor.create(result));
             }
         } else {
-            if (hasCustomConverter(infoBuilder.getObjectModel(), methodName)) {
-                return invokeCustomConverter(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get(), fieldObjectModel);
-            } else {
-                return ReflectionUtils.getValue(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get());
-            }
+            return ReflectionUtils.getValue(infoBuilder.getHibernateEntity(), hibernateEntityFieldFound.get());
         }
     }
 

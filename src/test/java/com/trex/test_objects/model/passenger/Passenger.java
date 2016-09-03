@@ -2,11 +2,9 @@ package com.trex.test_objects.model.passenger;
 
 
 
-import com.trex.DocumentExtractor;
+import com.trex.DocumentConverter;
+import com.trex.shared.annotations.Attribute;
 import com.trex.shared.annotations.Model;
-import com.trex.test_objects.hibernate_entities.User;
-import com.trex.shared.annotations.EntityReference;
-import com.trex.shared.annotations.Extractor;
 
 @Model
 public class Passenger {
@@ -15,6 +13,7 @@ public class Passenger {
 
   private String name;
 
+  @Attribute(destinationName = "documents", converter = DocumentConverter.class)
   private String passport;
 
   public Long getId() {
@@ -33,7 +32,7 @@ public class Passenger {
     this.name = name;
   }
 
-  @Extractor(DocumentExtractor.class)
+
   public String getPassport() {
     return passport;
   }
