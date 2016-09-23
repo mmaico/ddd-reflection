@@ -50,6 +50,7 @@ public class GetHandler implements Handler {
                 return ProxyCollectionHandler
                         .createProxyCollection((Collection) result, fieldObjectModel.get()).proxy();
             } else {
+
                 return Enhancer.create(infoBuilder.getMethod().getReturnType(), ProxyInterceptor.create(result));
             }
         } else {

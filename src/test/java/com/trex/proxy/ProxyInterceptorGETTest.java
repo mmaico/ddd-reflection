@@ -1,15 +1,20 @@
 package com.trex.proxy;
 
+
+import java.util.function.Function;
 import com.google.common.collect.Lists;
 import com.trex.test_objects.hibernate_entities.*;
 import com.trex.test_objects.model.negotiation.Negotiation;
 import com.trex.test_objects.model.negotiation.NegotiationItem;
 import com.trex.test_objects.model.negotiation.NegotiationStatus;
 import com.trex.test_objects.model.passenger.Aircraft;
+import net.sf.cglib.proxy.Callback;
+import net.sf.cglib.proxy.Factory;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,6 +27,19 @@ public class ProxyInterceptorGETTest {
     BusinessProposal businessProposal = getHibernateObjectOnRepository();
 
     Negotiation negotiationProxy = BusinessModelProxy.from(businessProposal).proxy(Negotiation.class);
+    List<Negotiation> list = new ArrayList<>();
+
+
+    if (negotiationProxy instanceof Factory) {
+      Callback callback = ((Factory) negotiationProxy).getCallback(0);
+      Object objectModel = ((ProxyInterceptor) callback).getObjectModel();
+      Object hibernateEntity = ((ProxyInterceptor) callback).getHibernateEntity();
+      System.out.println("testet");
+      System.out.println("testet");
+      System.out.println("testet");
+      System.out.println("testet");
+    }
+
 
     assertThat(negotiationProxy.getId(), Matchers.is(1l));
     assertThat(negotiationProxy.getIntroduction(), Matchers.is("test introduction"));

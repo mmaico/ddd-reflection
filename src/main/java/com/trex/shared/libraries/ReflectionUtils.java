@@ -110,7 +110,9 @@ public class ReflectionUtils {
     return field;
   }
 
-
+  public static String getFieldByGetOrSet(Method method) {
+    return StringUtils.uncapitalize(method.getName().replaceAll("(get|set)", ""));
+  }
 
   public static Object invokeGetter(Object target, Field field) {
     return invokeGetter(target, field.getName());
