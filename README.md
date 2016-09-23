@@ -22,12 +22,12 @@ e suportando referencias circulares.
     <dependency>
       <groupId>com.trex</groupId>
       <artifactId>ddd-reflection</artifactId>
-      <version>1.8.4</version>
+      <version>1.8.5</version>
     </dependency>
 ```
 
 ```xml
-    compile("com.trex:ddd-reflection:1.8.4")
+    compile("com.trex:ddd-reflection:1.8.5")
 ```
 
 ##Entidades de exemplo

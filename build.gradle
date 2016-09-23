@@ -100,10 +100,10 @@ bintray {
         issueTrackerUrl = issueUrl
         publish = true
         version {
-            name = '1.8.4'
-            desc = 'DDD Reflection release 1.8.3'
+            name = '1.8.5'
+            desc = 'DDD Reflection release 1.8.5'
             released  = new Date()
-            vcsTag = '1.8.4'
+            vcsTag = '1.8.5'
         }
     }
 }
@@ -114,7 +114,7 @@ publishing {
             artifact jar
             groupId 'com.trex'
             artifactId 'ddd-reflection'
-            version '1.8.4'
+            version '1.8.5'
         }
     }
 }
