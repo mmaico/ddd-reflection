@@ -16,13 +16,13 @@ def siteUrl = 'https://github.com/mmaico/ddd-reflection'      // Homepage URL of
 def gitUrl = 'https://github.com/mmaico/ddd-reflection.git'
 def issueUrl = 'https://github.com/mmaico/ddd-reflection.git/issues'
 
-group 'com.trex'
+group 'com.github.mmaico'
 version = getProperty('version')
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'net.researchgate.release'
+//apply plugin: 'net.researchgate.release'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'com.jfrog.bintray'
@@ -60,59 +60,59 @@ artifacts {
     archives sourcesJar
 }
 
-task writeNewPom << {
-    pom {
-        project {
-            inceptionYear '2016'
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    distribution 'repo'
-                }
-            }
+//task writeNewPom << {
+//    pom {
+//        project {
+//            inceptionYear '2016'
+//            licenses {
+//                license {
+//                    name 'The Apache Software License, Version 2.0'
+//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    distribution 'repo'
+//                }
+//            }
+//
+//            developers {
+//                developer {
+//                    id "mmaico"
+//                    name "Marcelo Maico"
+//                    email "mmaico@gmail.com"
+//                }
+//            }
+//
+//        }
+//    }.writeTo("$buildDir/libs/$project.name-$project.version" + ".xml")
+//}
 
-            developers {
-                developer {
-                    id "mmaico"
-                    name "Marcelo Maico"
-                    email "mmaico@gmail.com"
-                }
-            }
+//build.dependsOn writeNewPom
+//build.dependsOn javadocJar
 
-        }
-    }.writeTo("$buildDir/libs/$project.name-$project.version" + ".xml")
-}
-
-build.dependsOn writeNewPom
-build.dependsOn javadocJar
-
-bintray {
-    user = project.hasProperty('user') ? project.user : System.getenv("user")
-    key = project.hasProperty('key') ? project.key : System.getenv("key")
-    publications = ['Publication']
-    pkg {
-        repo = 'maven'
-        name = 'ddd-reflection'
-        licenses = ['Apache-2.0']
-        vcsUrl = gitUrl
-        websiteUrl = siteUrl
-        issueTrackerUrl = issueUrl
-        publish = true
-        version {
-            name = '1.8.5'
-            desc = 'DDD Reflection release 1.8.5'
-            released  = new Date()
-            vcsTag = '1.8.5'
-        }
-    }
-}
+//bintray {
+//    user = project.hasProperty('user') ? project.user : System.getenv("user")
+//    key = project.hasProperty('key') ? project.key : System.getenv("key")
+//    publications = ['Publication']
+//    pkg {
+//        repo = 'maven'
+//        name = 'ddd-reflection'
+//        licenses = ['Apache-2.0']
+//        vcsUrl = gitUrl
+//        websiteUrl = siteUrl
+//        issueTrackerUrl = issueUrl
+//        publish = true
+//        version {
+//            name = '1.8.5'
+//            desc = 'DDD Reflection release 1.8.5'
+//            released  = new Date()
+//            vcsTag = '1.8.5'
+//        }
+//    }
+//}
 
 publishing {
     publications {
         Publication(MavenPublication) {
             artifact jar
-            groupId 'com.trex'
+            groupId 'com.github.mmaico'
             artifactId 'ddd-reflection'
             version '1.8.5'
         }

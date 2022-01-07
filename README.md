@@ -20,14 +20,14 @@ e suportando referencias circulares.
 ##Instalação:
 ```xml
     <dependency>
-      <groupId>com.trex</groupId>
+      <groupId>com.github.mmaico</groupId>
       <artifactId>ddd-reflection</artifactId>
       <version>1.8.5</version>
     </dependency>
 ```
 
 ```xml
-    compile("com.trex:ddd-reflection:1.8.5")
+    compile("com.github.mmaico:ddd-reflection:1.8.5")
 ```
 
 ##Entidades de exemplo
