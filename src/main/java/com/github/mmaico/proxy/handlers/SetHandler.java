@@ -5,7 +5,6 @@ import com.github.mmaico.proxy.reflections.ReflectionProxyUtils;
 import com.github.mmaico.shared.annotations.Attribute;
 import com.github.mmaico.shared.annotations.Model;
 import com.github.mmaico.shared.libraries.CollectionUtils;
-import com.trex.shared.annotations.*;
 import com.github.mmaico.shared.libraries.ReflectionUtils;
 import com.github.mmaico.shared.libraries.registers.CollectionsImplementationRegister;
 import com.github.mmaico.shared.libraries.registers.PrimitiveTypeFields;
@@ -15,7 +14,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static com.github.mmaico.clone.BusinessModelClone.from;
-import static com.github.mmaico.shared.libraries.CollectionUtils.isCollection;
 import static com.github.mmaico.shared.libraries.ReflectionUtils.invokeGetter;
 import static com.github.mmaico.shared.libraries.ReflectionUtils.invokeSetter;
 

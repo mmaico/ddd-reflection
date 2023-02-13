@@ -1,7 +1,8 @@
 package com.github.mmaico.clone.reflections;
 
 
-
+import com.github.mmaico.clone.node.ChildNode;
+import com.github.mmaico.clone.node.NodeFields;
 import com.github.mmaico.shared.annotations.Attribute;
 import com.github.mmaico.shared.annotations.Model;
 import com.github.mmaico.shared.annotations.UpdateAttributes;
@@ -9,11 +10,7 @@ import com.github.mmaico.shared.converters.AttributeEntityConverter;
 import com.github.mmaico.shared.libraries.ReflectionUtils;
 import com.github.mmaico.shared.libraries.registers.PrimitiveTypeFields;
 import com.google.common.collect.Lists;
-import com.github.mmaico.clone.node.NodeFields;
-import com.trex.shared.annotations.*;
-import com.github.mmaico.clone.node.ChildNode;
 import net.vidageek.mirror.dsl.Mirror;
-import net.vidageek.mirror.list.dsl.MirrorList;
 import org.azeckoski.reflectutils.ReflectUtils;
 
 import java.lang.reflect.Field;

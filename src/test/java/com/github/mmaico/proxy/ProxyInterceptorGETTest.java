@@ -2,12 +2,11 @@ package com.github.mmaico.proxy;
 
 
 import com.github.mmaico.test_objects.hibernate_entities.*;
-import com.google.common.collect.Lists;
-import com.trex.test_objects.hibernate_entities.*;
 import com.github.mmaico.test_objects.model.negotiation.Negotiation;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationItem;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationStatus;
 import com.github.mmaico.test_objects.model.passenger.Aircraft;
+import com.google.common.collect.Lists;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Factory;
 import org.hamcrest.Matchers;

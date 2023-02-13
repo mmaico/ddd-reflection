@@ -1,13 +1,12 @@
 package com.github.mmaico.proxy;
 
 import com.github.mmaico.test_objects.hibernate_entities.*;
-import com.google.common.collect.Lists;
-import com.trex.test_objects.hibernate_entities.*;
 import com.github.mmaico.test_objects.model.negotiation.Negotiation;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationItem;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationStatus;
 import com.github.mmaico.test_objects.model.negotiation.Product;
 import com.github.mmaico.test_objects.model.seller.Seller;
+import com.google.common.collect.Lists;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;

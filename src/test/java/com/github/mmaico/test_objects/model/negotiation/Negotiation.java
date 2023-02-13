@@ -1,13 +1,10 @@
 package com.github.mmaico.test_objects.model.negotiation;
 
 
-
 import com.github.mmaico.NegotiationStatusEnumConverter;
 import com.github.mmaico.shared.annotations.Attribute;
 import com.github.mmaico.shared.annotations.Model;
 import com.github.mmaico.test_objects.hibernate_entities.BusinessProposal;
-import com.trex.shared.annotations.*;
-import com.trex.test_objects.hibernate_entities.*;
 import com.github.mmaico.test_objects.model.customer.Customer;
 import com.github.mmaico.test_objects.model.seller.Seller;
 

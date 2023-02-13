@@ -2,15 +2,14 @@ package com.github.mmaico.clone;
 
 
 import com.github.mmaico.test_objects.hibernate_entities.*;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.trex.test_objects.hibernate_entities.*;
 import com.github.mmaico.test_objects.model.customer.Customer;
 import com.github.mmaico.test_objects.model.negotiation.AdditionalInformation;
 import com.github.mmaico.test_objects.model.negotiation.Negotiation;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationItem;
 import com.github.mmaico.test_objects.model.negotiation.NegotiationStatus;
 import com.github.mmaico.test_objects.model.seller.Seller;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
